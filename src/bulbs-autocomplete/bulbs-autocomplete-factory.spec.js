@@ -1,23 +1,50 @@
 'use strict';
-describe('BulbsAutocomplete Factory', function() {
-  var BulbsAutocomplete;
+describe('BulbsAutocomplete Factory', function () {
+  var BulbsAutocomplete,
+    $rootScope,
+    $q;
 
-  beforeEach(function(){
+  beforeEach(function () {
     module('BulbsAutocomplete.factory');
-    inject(function(_BulbsAutocomplete_) {
+    inject(function (_BulbsAutocomplete_, _$q_, _$rootScope_) {
       BulbsAutocomplete = _BulbsAutocomplete_;
+      $q = _$q_;
+      $rootScope = _$rootScope_;
     });
   });
 
-  it('should error when not passed a valid getItemsFunction parameter', function(){
-    expect(new BulbsAutocomplete(null, function(){})).toThrow();
+  it('should error when not passed a valid getItemsFunction parameter', function () {
+    expect(function () {
+      new BulbsAutocomplete(null, function () {});
+    }).toThrow();
   });
 
-  it('should error when not passed a valid formatFunction parameter', function(){
-    expect(new BulbsAutocomplete(function(){}), null).toThrow();
+  it('should error when not passed a valid formatFunction parameter', function () {
+    expect(function () {
+      new BulbsAutocomplete(function () {}, null);
+    }).toThrow();
   });
 
-  it('should call getItems and format on $retrieve', function(){
-    expect(false);
+  it('should call getItems and format on $retrieve', function () {
+    var funk = {};
+    funk.getItemsFunction = function () {
+      var deferred = $q.defer();
+      deferred.resolve('bacon');
+      return deferred.promise;
+    };
+
+    funk.formatFunction = function () {
+      return 'bacon';
+    };
+
+    spyOn(funk, 'getItemsFunction').and.callThrough();
+    spyOn(funk, 'formatFunction').and.callThrough();
+
+    var bulbsAutocomplete = new BulbsAutocomplete(funk.getItemsFunction, funk.formatFunction);
+    bulbsAutocomplete.$retrieve();
+
+    $rootScope.$apply();
+    expect(funk.getItemsFunction).toHaveBeenCalled();
+    expect(funk.formatFunction).toHaveBeenCalled();
   });
 });

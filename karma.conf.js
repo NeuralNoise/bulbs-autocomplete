@@ -4,19 +4,6 @@
 module.exports = function(config) {
   'use strict';
 
-  // sauce labs custom launchers (https://saucelabs.com/platforms)
-  var customLaunchers = {
-    'SL_Chrome': {
-      base: 'SauceLabs',
-      browserName: 'chrome',
-      version: '38'
-    },
-    'SL_Firefox': {
-      base: 'SauceLabs',
-      browserName: 'firefox'
-    },
-  };
-
   config.set({
     // base path, that will be used to resolve files and exclude
     basePath: '',
@@ -28,12 +15,12 @@ module.exports = function(config) {
     files: [
       'bower_components/lodash/lodash.js',
       'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
       "src/**/*.js",
     ],
 
     // list of files / patterns to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // web server port
     port: 8080,
@@ -66,31 +53,8 @@ module.exports = function(config) {
 
   });
 
-  if (process.env.TRAVIS) {
-
-    // we're using Travis CI to do karma, configure as such
-    var buildLabel = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
-
-    // set up saucelabs stuff
-    config.captureTimeout = 0; // rely on SL timeout
-    config.singleRun = true;
-    config.autoWatch = false;
-    config.sauceLabs = {
-      build: buildLabel,
-      startConnect: false,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
-    };
-
-    config.customLaunchers = customLaunchers;
-    config.browsers = Object.keys(customLaunchers);
-    config.singleRun = true;
-    config.reporters.push('saucelabs');
-
-  } else {
-    // this is local, just use Chrome
-    config.singleRun = false;
-    config.autoWatch = true;
-    config.browsers = ['Chrome'];
-  }
-
+  // this is local, just use Chrome
+  config.singleRun = false;
+  config.autoWatch = true;
+  config.browsers = ['Chrome'];
 };

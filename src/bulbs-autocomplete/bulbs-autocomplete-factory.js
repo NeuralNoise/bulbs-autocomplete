@@ -1,8 +1,8 @@
 'use strict';
 angular.module('BulbsAutocomplete.factory', [])
-  .factory('BulbsAutocomplete', function($q) {
+  .factory('BulbsAutocomplete', function ($q) {
 
-    var BulbsAutocomplete = function(getItemsFunction, formatFunction) {
+    var BulbsAutocomplete = function (getItemsFunction, formatFunction) {
       if (_.isFunction(getItemsFunction)) {
         this._getItems = getItemsFunction;
       } else {
@@ -15,17 +15,20 @@ angular.module('BulbsAutocomplete.factory', [])
         throw 'BulbsAutocomplete Factory: Creation failed, formatFunction must be defined';
       }
     };
-    BulbsAutocomplete.prototype.$retrieve = function() {
+    BulbsAutocomplete.prototype.$retrieve = function () {
       var updateDeferred = $q.defer();
-      this._getItems()
-      .then(function(results) {
-        this._items = results;
-        this._itemsFormatted = this._formatFunction(results);
-        updateDeferred.resolve(this._itemsFormatted);
-      })
-      .catch(function(error) {
-        updateDeferred.reject(error);
-      });
+      var self = this;
+      self._getItems()
+        .then(function (results) {
+          self._items = results;
+          self._itemsFormatted = self._formatFunction(results);
+          updateDeferred.resolve(self._itemsFormatted);
+        })
+        .catch(function (error) {
+          updateDeferred.reject(error);
+        });
       return updateDeferred.promise;
     };
+
+    return BulbsAutocomplete;
   });

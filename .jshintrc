@@ -20,6 +20,12 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-    "_": true
+    "_": true,
+    "expect": true,
+    "spyOn": true,
+    "describe": true,
+    "it": true,
+    "inject": true,
+    "beforeEach": true
   }
 }
