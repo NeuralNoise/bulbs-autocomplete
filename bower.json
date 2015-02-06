@@ -1,0 +1,21 @@
+{
+  "name": "bulbs-autocomplete",
+  "version": "0.0.0",
+  "appPath": "src",
+  "description": "America's Finest Autocomplete module",
+  "authors": [
+    "Cresten StClair && Andrew Kos"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.12",
+    "lodash": "~3.1.0"
+  }
+}
