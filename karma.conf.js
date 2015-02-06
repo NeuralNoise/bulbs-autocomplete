@@ -27,12 +27,12 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'bower_components/lodash/lodash.js',
-      'src/**/*.js',
+      'bower_components/angular/angular.js',
+      "src/**/*.js",
     ],
 
     // list of files / patterns to exclude
     exclude: [
-      'src/**/*.spec.js'
     ],
 
     // web server port
