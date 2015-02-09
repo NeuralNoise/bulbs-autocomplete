@@ -10,17 +10,15 @@ angular.module('BulbsAutocomplete.factory', [])
       }
     };
     BulbsAutocomplete.prototype.$retrieve = function () {
-      var updateDeferred = $q.defer();
       var self = this;
-      self._getItems()
+      return self._getItems()
         .then(function (results) {
           self._items = results;
-          updateDeferred.resolve(self._itemsFormatted);
+          return self._items;
         })
         .catch(function (error) {
-          updateDeferred.reject(error);
+          return error;
         });
-      return updateDeferred.promise;
     };
 
     return BulbsAutocomplete;

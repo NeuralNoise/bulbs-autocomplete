@@ -11,7 +11,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
       },
       link: function (scope) {
         scope.$watch('items', function (newItemsValue) {
-          scope.formattedItems = _.map(newItemsValue, scope.formatter);
+          scope.formattedItems = _.map(newItemsValue, scope.formatter());
         });
       }
     }
