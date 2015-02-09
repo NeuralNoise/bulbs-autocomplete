@@ -5,14 +5,18 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest-directive/bulbs-autocomplete-suggest-directive.html',
       scope: {
-        formatter: '&',
+        formatter: '=',
         items: '=',
-        onSelect: '&'
+        onSelect: '='
       },
       link: function (scope) {
+        var applyFormatter = function (item) {
+          item.display = scope.formatter(item);
+          return item;
+        };
         scope.$watch('items', function (newItemsValue) {
-          scope.formattedItems = _.map(newItemsValue, scope.formatter());
+          scope.formattedItems = _.map(newItemsValue, applyFormatter);
         });
       }
-    }
+    };
   });

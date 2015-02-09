@@ -7,13 +7,14 @@
 <body>
 
   <div ng-controller="exampleController">
+    <h1>{{selectedSuggest.display}}</h1>
     <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()">
-    <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" onSelect="suggestSelect">
-    </autcomplete-suggest>
+    <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" on-select="suggestSelect">
+    </bulbs-autocomplete-suggest>
     <!-- <bulbs-autocomplete-suggest-group-by formatter="suggestFormatter" grouper="itemGrouper" onSelect="groupBySelect">
-    </autocomplete-suggest-group-by>
+    </bulbs-autocomplete-suggest-group-by>
      -->
-     </div>
+  </div>
 
   <!-- bower:js -->
   <script src="../bower_components/angular/angular.js"></script>
@@ -33,30 +34,46 @@
     angular.module('BulbsAutocomplete.example', ['BulbsAutocomplete'])
       .controller('exampleController', function($q, $scope, BulbsAutocomplete) {
 
-        var getItems = function () {
+        var getItems = function() {
           var defer = $q.defer();
 
-          defer.resolve([
-            {name: 'item1', value: 10},
-            {name: 'item11', value: 20},
-            {name: 'item21', value: 30},
-            {name: 'item31', value: 40},
-            {name: 'item41', value: 50},
-            {name: 'item51', value: 60},
-            {name: 'item61', value: 70}
-          ]);
+          defer.resolve([{
+            name: 'item1',
+            value: 10
+          }, {
+            name: 'item11',
+            value: 20
+          }, {
+            name: 'item21',
+            value: 30
+          }, {
+            name: 'item31',
+            value: 40
+          }, {
+            name: 'item41',
+            value: 50
+          }, {
+            name: 'item51',
+            value: 60
+          }, {
+            name: 'item61',
+            value: 70
+          }]);
           return defer.promise;
         };
 
-        $scope.suggestFormatter = function(item){
-          return item;
+        $scope.suggestFormatter = function(item) {
+          return item.name + ' - ' + item.value;
         };
 
+        $scope.suggestSelect = function(item) {
+          $scope.selectedSuggest = item;
+        };
 
         var autocomplete = new BulbsAutocomplete(getItems);
 
         $scope.updateAutocomplete = function() {
-          autocomplete.$retrieve().then(function(results){
+          autocomplete.$retrieve().then(function(results) {
             $scope.autocompleteItems = results;
           });
         };
