@@ -9,7 +9,6 @@
       border: 1px solid #000;
       color: #000;
     }
-
     bulbs-autocomplete-suggest ul li.active,
     bulbs-autocomplete-suggest-group-by ul li.active {
       background-color: #00f;
@@ -23,10 +22,8 @@
 
   <div ng-controller="exampleController">
     <h1>{{selectedSuggest.display}}</h1>
-    Search: <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()" ng-keydown="handleKeypress($event)">
-
-
-
+    Search:
+    <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()" ng-keydown="handleKeypress($event)">
     <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" on-select="suggestSelect">
     </bulbs-autocomplete-suggest>
     <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter" grouper="itemGrouper" on-select="suggestSelect">
@@ -95,7 +92,7 @@
 
         $scope.itemGrouper = function(items) {
           return _.groupBy(items, function(item) {
-            return item.value > 30 ? 'Less than or equal to thirty': 'More than thirty';
+            return item.value > 30 ? 'Less than or equal to thirty' : 'More than thirty';
           });
         };
 
@@ -107,7 +104,7 @@
           });
         };
 
-        $scope.handleKeypress = function ($event) {
+        $scope.handleKeypress = function($event) {
           $scope.$broadcast('bulbs-autocomplete-keypress', $event);
         };
 

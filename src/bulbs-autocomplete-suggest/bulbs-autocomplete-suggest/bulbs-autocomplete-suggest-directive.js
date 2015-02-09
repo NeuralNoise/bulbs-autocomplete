@@ -1,5 +1,7 @@
 'use strict';
-angular.module('BulbsAutocomplete.suggest.directive', ['BulbsAutocomplete.suggest.formatter.service'])
+angular.module('BulbsAutocomplete.suggest.directive', [
+  'BulbsAutocomplete.suggest.formatter.service'
+])
   .directive('bulbsAutocompleteSuggest', function (BulbsAutocompleteFormatterService) {
     return {
       restrict: 'E',
