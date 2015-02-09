@@ -16,7 +16,8 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      "src/**/*.js",
+      'src/**/*.html',
+      'src/**/*.js',
     ],
 
     // list of files / patterns to exclude
@@ -30,15 +31,13 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     preprocessors: {
-      'app/views/**/*.html': 'ng-html2js',
+      'src/**/*.html': 'ng-html2js',
     },
 
     // set up reporters
     reporters: ['progress'],
 
     ngHtml2JsPreprocessor: {
-      // strip this from the file path
-      stripPrefix: 'src',
 
       // setting this option will create only a single module that contains templates
       // from all the files, so you can load them all with module('foo')
