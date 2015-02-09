@@ -18,7 +18,7 @@ angular.module('BulbsAutocomplete.suggest.directive', ['BulbsAutocomplete.sugges
         scope.$on('bulbs-autocomplete-keypress', function (event, keyEvent) {
           if (scope.formattedItems) {
             var lastIndexOfItems = scope.formattedItems.length - 1;
-            switch(keyEvent.keyCode) {
+            switch (keyEvent.keyCode) {
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {

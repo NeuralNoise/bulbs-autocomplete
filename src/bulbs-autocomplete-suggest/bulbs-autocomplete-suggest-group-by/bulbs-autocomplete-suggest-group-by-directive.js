@@ -31,7 +31,7 @@ angular.module('BulbsAutocomplete.suggestGroupBy.directive', ['BulbsAutocomplete
 
             var items;
             var lastIndexOfItems;
-            switch(keyEvent.keyCode) {
+            switch (keyEvent.keyCode) {
               case 13:
                 // enter
                 items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
