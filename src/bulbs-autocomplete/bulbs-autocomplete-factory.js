@@ -2,17 +2,11 @@
 angular.module('BulbsAutocomplete.factory', [])
   .factory('BulbsAutocomplete', function ($q) {
 
-    var BulbsAutocomplete = function (getItemsFunction, formatFunction) {
+    var BulbsAutocomplete = function (getItemsFunction) {
       if (_.isFunction(getItemsFunction)) {
         this._getItems = getItemsFunction;
       } else {
         throw 'BulbsAutocomplete Factory: Creation failed, getItemsFunction must be defined';
-      }
-
-      if (_.isFunction(formatFunction)) {
-        this._formatFunction = formatFunction;
-      } else {
-        throw 'BulbsAutocomplete Factory: Creation failed, formatFunction must be defined';
       }
     };
     BulbsAutocomplete.prototype.$retrieve = function () {
@@ -21,7 +15,6 @@ angular.module('BulbsAutocomplete.factory', [])
       self._getItems()
         .then(function (results) {
           self._items = results;
-          self._itemsFormatted = self._formatFunction(results);
           updateDeferred.resolve(self._itemsFormatted);
         })
         .catch(function (error) {

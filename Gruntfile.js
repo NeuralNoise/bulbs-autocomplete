@@ -1,12 +1,14 @@
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+
+  var path = require('path');
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -35,6 +37,65 @@ module.exports = function(grunt) {
       }
     },
 
+    // Automatically inject Bower components into the app
+    wiredep: {
+      app: {
+        src: ['example/example.html'],
+        devDependencies: true,
+      }
+    },
+
+    connect: {
+      options: {
+        port: 9000,
+        // Change this to '0.0.0.0' to access the server from outside.
+        hostname: 'localhost',
+        livereload: 35729
+      },
+      example: {
+        options: {
+          port: 9001,
+          hostname: 'localhost',
+          middleware: function (connect) {
+            return [
+              connect().use(
+                '/bower_components',
+                connect.static('./bower_components')
+              ),
+              connect.static('./example'),
+              connect().use(
+                '/src',
+                connect.static('./src')
+              ),
+            ];
+          }
+        }
+      }
+    },
+    injector: {
+      localDependencies: {
+        files: {
+          'example/example.html': [
+            'src/**/*.js',
+            '!**/*.spec.js'
+          ],
+        },
+        options: {
+          addRootSlash: true,
+          transform: function (filepath) {
+            var e = path.extname(filepath).slice(1);
+            if (e === 'css') {
+              return '<link rel="stylesheet" href="' + filepath + '">';
+            } else if (e === 'js') {
+              return '<script src="' + filepath + '"></script>';
+            } else if (e === 'html') {
+              return '<link rel="import" href="' + filepath + '">';
+            }
+          }
+        }
+      }
+    },
+
     // Test settings
     karma: {
       unit: {
@@ -54,6 +115,13 @@ module.exports = function(grunt) {
   grunt.registerTask('test', [
     'karma',
   ]);
+
+  grunt.registerTask('run-example', [
+    'wiredep:app',
+    'injector:localDependencies',
+    'connect:example:keepalive'
+  ]);
+
 
   grunt.registerTask('default', [
     'newer:jshint',

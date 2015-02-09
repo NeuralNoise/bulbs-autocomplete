@@ -1,0 +1,8 @@
+<ul>
+  <li ng-repeat="group in formattedItems">
+    {{group.name}}
+    <ul>
+      <li ng-repeat="item in group.items">{{item}}</li>
+    </ul>
+  </li>
+</ul>

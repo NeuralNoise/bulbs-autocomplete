@@ -15,13 +15,7 @@ describe('BulbsAutocomplete Factory', function () {
 
   it('should error when not passed a valid getItemsFunction parameter', function () {
     expect(function () {
-      new BulbsAutocomplete(null, function () {});
-    }).toThrow();
-  });
-
-  it('should error when not passed a valid formatFunction parameter', function () {
-    expect(function () {
-      new BulbsAutocomplete(function () {}, null);
+      new BulbsAutocomplete(null);
     }).toThrow();
   });
 
@@ -33,18 +27,12 @@ describe('BulbsAutocomplete Factory', function () {
       return deferred.promise;
     };
 
-    funk.formatFunction = function () {
-      return 'bacon';
-    };
-
     spyOn(funk, 'getItemsFunction').and.callThrough();
-    spyOn(funk, 'formatFunction').and.callThrough();
 
-    var bulbsAutocomplete = new BulbsAutocomplete(funk.getItemsFunction, funk.formatFunction);
+    var bulbsAutocomplete = new BulbsAutocomplete(funk.getItemsFunction);
     bulbsAutocomplete.$retrieve();
 
     $rootScope.$apply();
     expect(funk.getItemsFunction).toHaveBeenCalled();
-    expect(funk.formatFunction).toHaveBeenCalled();
   });
 });
