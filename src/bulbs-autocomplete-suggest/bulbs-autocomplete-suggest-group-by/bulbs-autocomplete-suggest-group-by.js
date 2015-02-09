@@ -1,1 +1,5 @@
-angular.module('BulbsAutocomplete.suggestGroupBy', ['BulbsAutocomplete.suggestGroupBy.directive']);
+'use strict';
+
+angular.module('BulbsAutocomplete.suggestGroupBy', [
+  'BulbsAutocomplete.suggestGroupBy.directive'
+]);

@@ -1,6 +1,7 @@
 'use strict';
+
 angular.module('BulbsAutocomplete.factory', [])
-  .factory('BulbsAutocomplete', function ($q) {
+  .factory('BulbsAutocomplete', function () {
 
     var BulbsAutocomplete = function (getItemsFunction) {
       if (_.isFunction(getItemsFunction)) {
@@ -9,6 +10,7 @@ angular.module('BulbsAutocomplete.factory', [])
         throw 'BulbsAutocomplete Factory: Creation failed, getItemsFunction must be defined';
       }
     };
+
     BulbsAutocomplete.prototype.$retrieve = function () {
       var self = this;
       return self._getItems()

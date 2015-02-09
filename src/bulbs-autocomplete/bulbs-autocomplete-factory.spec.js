@@ -1,4 +1,5 @@
 'use strict';
+
 describe('BulbsAutocomplete Factory', function () {
   var BulbsAutocomplete,
     $rootScope,
