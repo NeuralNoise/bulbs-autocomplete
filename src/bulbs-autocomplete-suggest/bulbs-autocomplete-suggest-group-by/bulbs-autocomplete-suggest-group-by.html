@@ -1,8 +1,13 @@
 <ul>
-  <li ng-repeat="(key,group) in formattedGroupedItems">
-    {{key}}
+  <li ng-repeat="group in formattedGroupedItems">
+    <div class="bulbs-autocomplete-group-by-key">{{ group[0] }}<div>
     <ul>
-      <li ng-repeat="item in group" ng-click="onSelect(item)">{{item.display}}</li>
+      <li
+          ng-repeat="item in group[1]"
+          ng-click="onSelect(item)"
+          ng-class="{active: selectedGroupIndex === $parent.$index && $index === selectedIndex}"
+          ng-mouseenter="selectedGroupIndex = $parent.$index; selectedIndex = $index"
+          ng-mouseleave="selectedGroupIndex = -1; selectedIndex = -1">{{ item.display }}</li>
     </ul>
   </li>
 </ul>

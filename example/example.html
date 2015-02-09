@@ -2,13 +2,33 @@
 
 <head>
   <title>BACON</title>
+
+  <style>
+    bulbs-autocomplete-suggest ul li,
+    bulbs-autocomplete-suggest-group-by ul li {
+      border: 1px solid #000;
+      color: #000;
+    }
+
+    bulbs-autocomplete-suggest ul li.active,
+    bulbs-autocomplete-suggest-group-by ul li.active {
+      background-color: #00f;
+      border: 1px solid #fff;
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
 
   <div ng-controller="exampleController">
     <h1>{{selectedSuggest.display}}</h1>
-    <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()">
+    Search: <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()" ng-keydown="handleKeypress($event)">
+
+
+
+<!-- TODO : HOVERING SUCKS -->    
+
     <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" on-select="suggestSelect">
     </bulbs-autocomplete-suggest>
     <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter" grouper="itemGrouper" on-select="suggestSelect">
@@ -37,28 +57,33 @@
         var getItems = function() {
           var defer = $q.defer();
 
-          defer.resolve([{
-            name: 'item1',
-            value: 10
-          }, {
-            name: 'item11',
-            value: 20
-          }, {
-            name: 'item21',
-            value: 30
-          }, {
-            name: 'item31',
-            value: 40
-          }, {
-            name: 'item41',
-            value: 50
-          }, {
-            name: 'item51',
-            value: 60
-          }, {
-            name: 'item61',
-            value: 70
-          }]);
+          if ($scope.searchTerm) {
+            defer.resolve([{
+              name: 'item1',
+              value: 10
+            }, {
+              name: 'item11',
+              value: 20
+            }, {
+              name: 'item21',
+              value: 30
+            }, {
+              name: 'item31',
+              value: 40
+            }, {
+              name: 'item41',
+              value: 50
+            }, {
+              name: 'item51',
+              value: 60
+            }, {
+              name: 'item61',
+              value: 70
+            }]);
+          } else {
+            defer.resolve([]);
+          }
+
           return defer.promise;
         };
 
@@ -84,6 +109,9 @@
           });
         };
 
+        $scope.handleKeypress = function ($event) {
+          $scope.$broadcast('bulbs-autocomplete-keypress', $event);
+        };
 
       });
   </script>
