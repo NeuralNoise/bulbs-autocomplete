@@ -11,9 +11,8 @@
     <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()">
     <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" on-select="suggestSelect">
     </bulbs-autocomplete-suggest>
-    <!-- <bulbs-autocomplete-suggest-group-by formatter="suggestFormatter" grouper="itemGrouper" onSelect="groupBySelect">
+    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter" grouper="itemGrouper" on-select="groupBySelect">
     </bulbs-autocomplete-suggest-group-by>
-     -->
   </div>
 
   <!-- bower:js -->
@@ -22,10 +21,11 @@
   <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
   <!-- endbower-->
   <!-- injector:js -->
-  <script src="/src/bulbs-autocomplete-suggest-directive/bulbs-autocomplete-suggest-directive.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest-directive/bulbs-autocomplete-suggest.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-formatter-service.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.js"></script>
   <script src="/src/bulbs-autocomplete.js"></script>
   <script src="/src/bulbs-autocomplete/bulbs-autocomplete-factory.js"></script>
   <!-- endinjector -->
@@ -68,6 +68,12 @@
 
         $scope.suggestSelect = function(item) {
           $scope.selectedSuggest = item;
+        };
+
+        $scope.itemGrouper = function(items) {
+          return _.groupBy(items, function(item) {
+            return item.value > 30 ? 'Less than or equal to thirty': 'More than thirty';
+          });
         };
 
         var autocomplete = new BulbsAutocomplete(getItems);
