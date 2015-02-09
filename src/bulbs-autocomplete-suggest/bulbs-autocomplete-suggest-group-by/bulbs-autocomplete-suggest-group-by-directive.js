@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BulbsAutocomplete.suggestGroupBy.directive', [
+angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
   .directive('bulbsAutocompleteSuggestGroupBy', function (BulbsAutocompleteFormatterService) {

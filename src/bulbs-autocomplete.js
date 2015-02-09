@@ -3,5 +3,5 @@
 angular.module('BulbsAutocomplete', [
   'BulbsAutocomplete.factory',
   'BulbsAutocomplete.suggest',
-  'BulbsAutocomplete.suggestGroupBy'
+  'BulbsAutocomplete.suggest.groupBy'
 ]);
