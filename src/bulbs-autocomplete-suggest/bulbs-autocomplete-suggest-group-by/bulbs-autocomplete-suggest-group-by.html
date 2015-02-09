@@ -5,9 +5,9 @@
       <li
           ng-repeat="item in group[1]"
           ng-click="onSelect(item)"
-          ng-class="{active: selectedGroupIndex === $parent.$index && $index === selectedIndex}"
-          ng-mouseenter="selectedGroupIndex = $parent.$index; selectedIndex = $index"
-          ng-mouseleave="selectedGroupIndex = -1; selectedIndex = -1">{{ item.display }}</li>
+          ng-class="{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}"
+          ng-mouseenter="$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index"
+          ng-mouseleave="$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1">{{ item.display }}</li>
     </ul>
   </li>
 </ul>

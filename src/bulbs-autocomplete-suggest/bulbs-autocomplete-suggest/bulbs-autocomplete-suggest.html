@@ -2,7 +2,7 @@
   <li
       ng-repeat="item in formattedItems"
       ng-click="onSelect(item)"
-      ng-class="{active: $index === selectedIndex}"
-      ng-mouseenter="selectedIndex = $index"
-      ng-mouseleave="selectedIndex = -1">{{ item.display }}</li>
+      ng-class="{active: $index === $parent.selectedIndex}"
+      ng-mouseenter="$parent.selectedIndex = $index"
+      ng-mouseleave="$parent.selectedIndex = -1">{{ item.display }}</li>
 </ul>
