@@ -2,7 +2,7 @@
   <li ng-repeat="(key,group) in formattedGroupedItems">
     {{key}}
     <ul>
-      <li ng-repeat="item in group">{{item.display}}</li>
+      <li ng-repeat="item in group" ng-click="onSelect(item)">{{item.display}}</li>
     </ul>
   </li>
 </ul>

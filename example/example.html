@@ -11,7 +11,7 @@
     <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()">
     <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" on-select="suggestSelect">
     </bulbs-autocomplete-suggest>
-    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter" grouper="itemGrouper" on-select="groupBySelect">
+    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter" grouper="itemGrouper" on-select="suggestSelect">
     </bulbs-autocomplete-suggest-group-by>
   </div>
 
