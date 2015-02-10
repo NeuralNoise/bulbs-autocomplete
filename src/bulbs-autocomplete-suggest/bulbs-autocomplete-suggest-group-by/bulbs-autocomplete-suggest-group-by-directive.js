@@ -29,7 +29,6 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
         scope.selectedIndex = -1;
         scope.$on('bulbs-autocomplete-keypress', function (event, keyEvent) {
           if (!_.isEmpty(scope.formattedGroupedItems)) {
-
             var lastIndexOfGroups = scope.formattedGroupedItems.length - 1;
 
             var items;
@@ -37,9 +36,8 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
             switch (keyEvent.keyCode) {
               case 13:
                 // enter
-                items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
-
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
+                  items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
                   scope.onSelect(items[scope.selectedIndex]);
                 }
                 break;
@@ -61,6 +59,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                 } else {
                   scope.selectedIndex = scope.selectedIndex <= 0 ? lastIndexOfItems : scope.selectedIndex - 1;
                 }
+
                 break;
               case 40:
                 // down
