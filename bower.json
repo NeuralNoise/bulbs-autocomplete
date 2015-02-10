@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "appPath": "src",
   "description": "America's Finest Autocomplete module",
+  "main": [
+    "src/**/*"
+  ],
   "authors": [
     "Cresten St.Clair && Andrew Kos"
   ],
