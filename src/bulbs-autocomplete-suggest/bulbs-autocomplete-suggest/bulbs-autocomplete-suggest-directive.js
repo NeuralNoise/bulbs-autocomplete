@@ -32,6 +32,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
                 scope.selectedIndex = scope.selectedIndex <= 0 ? lastIndexOfItems : scope.selectedIndex - 1;
                 break;
               case 40:
+                //Down
                 scope.selectedIndex = scope.selectedIndex >= lastIndexOfItems ? 0 : scope.selectedIndex + 1;
                 break;
             }
