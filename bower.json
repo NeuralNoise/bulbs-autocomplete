@@ -1,10 +1,10 @@
 {
   "name": "bulbs-autocomplete",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "appPath": "src",
   "description": "America's Finest Autocomplete module",
   "authors": [
-    "Cresten StClair && Andrew Kos"
+    "Cresten St.Clair && Andrew Kos"
   ],
   "license": "MIT",
   "ignore": [
