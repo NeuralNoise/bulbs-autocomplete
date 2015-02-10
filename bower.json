@@ -4,7 +4,8 @@
   "appPath": "src",
   "description": "America's Finest Autocomplete module",
   "main": [
-    "src/**/*"
+    "src/**/*",
+    "!src/**/*.spec.js"
   ],
   "authors": [
     "Cresten St.Clair && Andrew Kos"
