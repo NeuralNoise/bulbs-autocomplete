@@ -56,6 +56,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
 
   describe('Enter key', function () {
+
     it('should not fire onSelect if selectedIndex === -1', function () {
       suggestScope.selectedIndex = -1;
 
@@ -74,21 +75,69 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
       });
       expect(suggestScope.onSelect).toHaveBeenCalled();
     });
+
   });
 
   describe('Down key', function () {
+    it('should select the first element if the selectedIndex is on the last element', function () {
+      suggestScope.selectedIndex = suggestScope.items.length - 1;
+      $scope.$broadcast('bulbs-autocomplete-keypress', {
+        'keyCode': 40
+      });
+      $scope.$digest();
+      var selectedElement = $(element).find('ul > li:first');
+      expect(selectedElement.hasClass('active')).toBe(true);
+    });
 
+    it('should select the first element if selectedIndex is -1', function () {
+      $scope.$broadcast('bulbs-autocomplete-keypress', {
+        'keyCode': 40
+      });
+      $scope.$digest();
+      var selectedElement = $(element).find('ul > li:first');
+      expect(selectedElement.hasClass('active')).toBe(true);
+    });
+
+    it('should select the second element if selectedIndex is 0', function () {
+      suggestScope.selectedIndex = 0;
+      $scope.$broadcast('bulbs-autocomplete-keypress', {
+        'keyCode': 40
+      });
+      $scope.$digest();
+      var selectedElement = $(element).find('ul > li:nth-child(2)');
+      expect(selectedElement.hasClass('active')).toBe(true);
+    });
   });
 
   describe('Up key', function () {
+    it('should select the last element if the selectedIndex is on the first element', function () {
+      suggestScope.selectedIndex = 0;
+      $scope.$broadcast('bulbs-autocomplete-keypress', {
+        'keyCode': 38
+      });
+      $scope.$digest();
+      var selectedElement = $(element).find('ul > li:last');
+      expect(selectedElement.hasClass('active')).toBe(true);
+    });
 
-  });
+    it('should select the second to last element if selectedIndex is the last element', function () {
+      suggestScope.selectedIndex = suggestScope.items.length - 1;
+      $scope.$broadcast('bulbs-autocomplete-keypress', {
+        'keyCode': 38
+      });
+      $scope.$digest();
+      var selectedElement = $(element).find('ul > li:nth-child(3)');
+      expect(selectedElement.hasClass('active')).toBe(true);
+    });
 
-  describe('Left key', function () {
-
-  });
-
-  describe('Right key', function () {
-
+    it('should select the last element if selectedIndex is -1', function () {
+      suggestScope.selectedIndex = -1;
+      $scope.$broadcast('bulbs-autocomplete-keypress', {
+        'keyCode': 38
+      });
+      $scope.$digest();
+      var selectedElement = $(element).find('ul > li:last');
+      expect(selectedElement.hasClass('active')).toBe(true);
+    });
   });
 });
