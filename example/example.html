@@ -31,22 +31,19 @@
   </div>
 
   <!-- bower:js -->
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/lodash/lodash.js"></script>
   <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
   <!-- endbower-->
   <!-- injector:js -->
-  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-formatter-service.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js"></script>
-  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.js"></script>
-  <script src="/src/bulbs-autocomplete.js"></script>
-  <script src="/src/bulbs-autocomplete/bulbs-autocomplete-factory.js"></script>
+  <script src="/dist/bulbs-autocomplete.js"></script>
+  <script src="/dist/bulbs-autocomplete-templates.js"></script>
+  <!-- endinjector -->
   <!-- endinjector -->
 
   <script>
-    angular.module('BulbsAutocomplete.example', ['BulbsAutocomplete'])
+    angular.module('BulbsAutocomplete.example', ['BulbsAutocomplete', 'BulbsAutocomplete.suggest', 'BulbsAutocomplete.suggest.groupBy'])
       .controller('exampleController', function($q, $scope, BulbsAutocomplete) {
 
         var getItems = function() {

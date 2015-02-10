@@ -45,6 +45,8 @@ module.exports = function (grunt) {
       }
     },
 
+
+
     connect: {
       options: {
         port: 9000,
@@ -67,6 +69,10 @@ module.exports = function (grunt) {
                 '/src',
                 connect.static('./src')
               ),
+              connect().use(
+                '/dist',
+                connect.static('./dist')
+              )
             ];
           }
         }
@@ -93,6 +99,52 @@ module.exports = function (grunt) {
             }
           }
         }
+      },
+      dist: {
+        files: {
+          'example/example.html': [
+            'dist/bulbs-autocomplete.js',
+            'dist/bulbs-autocomplete-templates.js'
+          ],
+        },
+        options: {
+          addRootSlash: true,
+          transform: function (filepath) {
+            var e = path.extname(filepath).slice(1);
+            if (e === 'css') {
+              return '<link rel="stylesheet" href="' + filepath + '">';
+            } else if (e === 'js') {
+              return '<script src="' + filepath + '"></script>';
+            } else if (e === 'html') {
+              return '<link rel="import" href="' + filepath + '">';
+            }
+          }
+        }
+      }
+    },
+
+    concat: {
+      options: {
+        separator: grunt.util.linefeed,
+        souceMap: true
+      },
+      dist: {
+        src: [
+          'src/**/*.js',
+          '!src/**/*.spec.js'
+        ],
+        dest: 'dist/bulbs-autocomplete.js'
+      }
+    },
+
+    ngtemplates: {
+      BulbsAutocomplete: {
+        src: ['src/**/*.html'],
+        dest: 'dist/bulbs-autocomplete-templates.js',
+        options: {
+          collapseWhitespace: true,
+          collapseBooleanAttributes: true
+        }
       }
     },
 
@@ -116,9 +168,20 @@ module.exports = function (grunt) {
     'karma',
   ]);
 
-  grunt.registerTask('run-example', [
+  grunt.registerTask('build', [
+    'concat',
+    'ngtemplates:BulbsAutocomplete'
+  ]);
+
+  grunt.registerTask('run-dist', [
+    'injector:dist',
     'wiredep:app',
+    'connect:example:keepalive'
+  ]);
+
+  grunt.registerTask('run-example', [
     'injector:localDependencies',
+    'wiredep:app',
     'connect:example:keepalive'
   ]);
 
