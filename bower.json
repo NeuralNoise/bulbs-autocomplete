@@ -1,6 +1,6 @@
 {
   "name": "bulbs-autocomplete",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "appPath": "src",
   "description": "America's Finest Autocomplete module",
   "main": [

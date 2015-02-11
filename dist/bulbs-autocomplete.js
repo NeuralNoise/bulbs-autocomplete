@@ -36,6 +36,14 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
             .value();
         });
 
+        scope.onSelectWrapper = function (item) {
+          // evaluate select callback, check if it's a function to execute
+          var selectCallback = scope.onSelect();
+          if (_.isFunction(selectCallback)) {
+            selectCallback(item);
+          }
+        };
+
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
@@ -49,12 +57,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                 // enter
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
                   items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
-
-                  // evaluate select callback, check if it's a function to execute
-                  var selectCallback = scope.onSelect();
-                  if (_.isFunction(selectCallback)) {
-                    selectCallback(items[scope.selectedIndex]);
-                  }
+                  scope.onSelectWrapper(items[scope.selectedIndex]);
                 }
                 break;
               case 38:
@@ -127,6 +130,14 @@ angular.module('BulbsAutocomplete.suggest.directive', [
           scope.formattedItems = _.map(newItemsValue, BulbsAutocompleteFormatterService.buildFormatter(scope.formatter));
         });
 
+        scope.onSelectWrapper = function (item) {
+          // evaluate select callback, check if it's a function to execute
+          var selectCallback = scope.onSelect();
+          if (_.isFunction(selectCallback)) {
+            selectCallback(item);
+          }
+        };
+
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (scope.formattedItems) {
@@ -135,11 +146,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  // evaluate select callback, check if it's a function to execute
-                  var selectCallback = scope.onSelect();
-                  if (_.isFunction(selectCallback)) {
-                    selectCallback(scope.formattedItems[scope.selectedIndex]);
-                  }
+                  scope.onSelectWrapper(scope.formattedItems[scope.selectedIndex]);
                 }
                 break;
               case 38:
@@ -199,12 +206,12 @@ angular.module('BulbsAutocomplete', [
 // Source: .tmp/bulbs-autocomplete-templates.js
 angular.module('BulbsAutocomplete').run(['$templateCache', function($templateCache) {
 $templateCache.put('src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
-    "<ul><li ng-repeat=\"group in formattedGroupedItems\"><div class=bulbs-autocomplete-group-key>{{ group[0] }}<div><ul class=bulbs-autocomplete-group-items><li ng-repeat=\"item in group[1]\" ng-click=onSelect(item) ng-class=\"{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}\" ng-mouseenter=\"$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1\">{{ item.display }}</li></ul></div></div></li></ul>"
+    "<ul><li ng-repeat=\"group in formattedGroupedItems\"><div class=bulbs-autocomplete-group-key>{{ group[0] }}<div><ul class=bulbs-autocomplete-group-items><li ng-repeat=\"item in group[1]\" ng-click=onSelectWrapper(item) ng-class=\"{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}\" ng-mouseenter=\"$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1\">{{ item.display }}</li></ul></div></div></li></ul>"
   );
 
 
   $templateCache.put('src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
-    "<ul><li ng-repeat=\"item in formattedItems\" ng-click=onSelect(item) ng-class=\"{active: $index === $parent.selectedIndex}\" ng-mouseenter=\"$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.selectedIndex = -1\">{{ item.display }}</li></ul>"
+    "<ul><li ng-repeat=\"item in formattedItems\" ng-click=onSelectWrapper(item) ng-class=\"{active: $index === $parent.selectedIndex}\" ng-mouseenter=\"$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.selectedIndex = -1\">{{ item.display }}</li></ul>"
   );
 
 }]);
