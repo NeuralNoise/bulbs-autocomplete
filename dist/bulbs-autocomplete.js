@@ -36,14 +36,6 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
             .value();
         });
 
-        scope.onSelectWrapper = function (item) {
-          // evaluate select callback, check if it's a function to execute
-          var selectCallback = scope.onSelect();
-          if (_.isFunction(selectCallback)) {
-            selectCallback(item);
-          }
-        };
-
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
@@ -57,7 +49,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                 // enter
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
                   items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
-                  scope.onSelectWrapper(items[scope.selectedIndex]);
+                  scope.onSelect({selection: items[scope.selectedIndex]});
                 }
                 break;
               case 38:
@@ -130,14 +122,6 @@ angular.module('BulbsAutocomplete.suggest.directive', [
           scope.formattedItems = _.map(newItemsValue, BulbsAutocompleteFormatterService.buildFormatter(scope.formatter));
         });
 
-        scope.onSelectWrapper = function (item) {
-          // evaluate select callback, check if it's a function to execute
-          var selectCallback = scope.onSelect();
-          if (_.isFunction(selectCallback)) {
-            selectCallback(item);
-          }
-        };
-
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (scope.formattedItems) {
@@ -146,7 +130,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  scope.onSelectWrapper(scope.formattedItems[scope.selectedIndex]);
+                  scope.onSelect({selection: scope.formattedItems[scope.selectedIndex]});
                 }
                 break;
               case 38:
