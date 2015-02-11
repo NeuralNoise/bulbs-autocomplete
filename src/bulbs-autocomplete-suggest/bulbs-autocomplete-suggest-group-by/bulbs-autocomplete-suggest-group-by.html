@@ -4,7 +4,7 @@
     <ul class="bulbs-autocomplete-group-items">
       <li
           ng-repeat="item in group[1]"
-          ng-click="onSelect(item)"
+          ng-click="onSelect({selection: item})"
           ng-class="{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}"
           ng-mouseenter="$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index"
           ng-mouseleave="$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1">{{ item.display }}</li>
