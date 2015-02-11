@@ -11,7 +11,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
         formatter: '=',
         grouper: '=',
         items: '=',
-        onSelect: '='
+        onSelect: '&'
       },
       link: function (scope) {
         scope.$watch('items', function (newItemsValue) {
@@ -38,7 +38,12 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                 // enter
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
                   items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
-                  scope.onSelect(items[scope.selectedIndex]);
+
+                  // evaluate select callback, check if it's a function to execute
+                  var selectCallback = scope.onSelect();
+                  if (_.isFunction(selectCallback)) {
+                    selectCallback(items[scope.selectedIndex]);
+                  }
                 }
                 break;
               case 38:

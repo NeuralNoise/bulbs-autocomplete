@@ -9,7 +9,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
       scope: {
         formatter: '=',
         items: '=',
-        onSelect: '='
+        onSelect: '&'
       },
       link: function (scope) {
         scope.$watch('items', function (newItemsValue) {
@@ -24,7 +24,11 @@ angular.module('BulbsAutocomplete.suggest.directive', [
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  scope.onSelect(scope.formattedItems[scope.selectedIndex]);
+                  // evaluate select callback, check if it's a function to execute
+                  var selectCallback = scope.onSelect();
+                  if (_.isFunction(selectCallback)) {
+                    selectCallback(scope.formattedItems[scope.selectedIndex]);
+                  }
                 }
                 break;
               case 38:
