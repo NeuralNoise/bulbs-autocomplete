@@ -1,13 +1,14 @@
 {
   "name": "bulbs-autocomplete",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "appPath": "src",
   "description": "America's Finest Autocomplete module",
   "main": [
     "dist/bulbs-autocomplete.js"
   ],
   "authors": [
-    "Cresten St.Clair && Andrew Kos"
+    "Cresten St.Clair <cstclair@theonion.com>",
+    "Andrew Kos <akos@theonion.com>"
   ],
   "license": "MIT",
   "ignore": [
