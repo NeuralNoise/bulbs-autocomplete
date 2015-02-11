@@ -16,6 +16,14 @@ angular.module('BulbsAutocomplete.suggest.directive', [
           scope.formattedItems = _.map(newItemsValue, BulbsAutocompleteFormatterService.buildFormatter(scope.formatter));
         });
 
+        scope.onSelectWrapper = function (item) {
+          // evaluate select callback, check if it's a function to execute
+          var selectCallback = scope.onSelect();
+          if (_.isFunction(selectCallback)) {
+            selectCallback(item);
+          }
+        };
+
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (scope.formattedItems) {
@@ -24,11 +32,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  // evaluate select callback, check if it's a function to execute
-                  var selectCallback = scope.onSelect();
-                  if (_.isFunction(selectCallback)) {
-                    selectCallback(scope.formattedItems[scope.selectedIndex]);
-                  }
+                  scope.onSelectWrapper(scope.formattedItems[scope.selectedIndex]);
                 }
                 break;
               case 38:

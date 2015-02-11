@@ -25,6 +25,14 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
             .value();
         });
 
+        scope.onSelectWrapper = function (item) {
+          // evaluate select callback, check if it's a function to execute
+          var selectCallback = scope.onSelect();
+          if (_.isFunction(selectCallback)) {
+            selectCallback(item);
+          }
+        };
+
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
@@ -38,12 +46,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                 // enter
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
                   items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
-
-                  // evaluate select callback, check if it's a function to execute
-                  var selectCallback = scope.onSelect();
-                  if (_.isFunction(selectCallback)) {
-                    selectCallback(items[scope.selectedIndex]);
-                  }
+                  scope.onSelectWrapper(items[scope.selectedIndex]);
                 }
                 break;
               case 38:
