@@ -56,7 +56,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       spyOn($scope, 'grouper').and.callThrough();
       spyOn($scope, 'onSelect').and.callThrough();
 
-      element = $compile('<bulbs-autocomplete-suggest-group-by formatter="formatter" grouper="grouper" items="items" on-select="onSelect"></bulbs-autocomplete-suggest-group-by>')($scope.$new());
+      element = $compile('<bulbs-autocomplete-suggest-group-by formatter="formatter" grouper="grouper" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest-group-by>')($scope.$new());
       _$rootScope_.$digest();
       $directiveScope = element.isolateScope();
     });

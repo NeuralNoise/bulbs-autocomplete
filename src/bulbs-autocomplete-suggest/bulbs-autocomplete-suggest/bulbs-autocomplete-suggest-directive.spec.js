@@ -14,7 +14,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
   beforeEach(function () {
     module('BulbsAutocomplete.suggest');
     module('jsTemplates');
-    elementHtml = '<bulbs-autocomplete-suggest formatter="formatter" items="items" on-select="onSelect"></bulbs-autocomplete-suggest>';
+    elementHtml = '<bulbs-autocomplete-suggest formatter="formatter" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest>';
     inject(function ($injector) {
       $compile = $injector.get('$compile');
       $rootScope = $injector.get('$rootScope');
