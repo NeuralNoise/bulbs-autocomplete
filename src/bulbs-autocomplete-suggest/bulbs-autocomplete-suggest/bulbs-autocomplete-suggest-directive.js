@@ -2,7 +2,7 @@
 angular.module('BulbsAutocomplete.suggest.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
-  .directive('bulbsAutocompleteSuggest', function (BulbsAutocompleteFormatterService) {
+  .directive('bulbsAutocompleteSuggest', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, BulbsAutocompleteFormatterService) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
@@ -17,7 +17,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
         });
 
         scope.selectedIndex = -1;
-        scope.$on('bulbs-autocomplete-keypress', function (event, keyEvent) {
+        scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (scope.formattedItems) {
             var lastIndexOfItems = scope.formattedItems.length - 1;
             switch (keyEvent.keyCode) {

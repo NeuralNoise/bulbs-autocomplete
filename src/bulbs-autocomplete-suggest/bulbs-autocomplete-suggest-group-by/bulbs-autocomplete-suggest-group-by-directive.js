@@ -3,7 +3,7 @@
 angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
-  .directive('bulbsAutocompleteSuggestGroupBy', function (BulbsAutocompleteFormatterService) {
+  .directive('bulbsAutocompleteSuggestGroupBy', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, BulbsAutocompleteFormatterService) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
@@ -27,7 +27,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
 
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
-        scope.$on('bulbs-autocomplete-keypress', function (event, keyEvent) {
+        scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (!_.isEmpty(scope.formattedGroupedItems)) {
             var lastIndexOfGroups = scope.formattedGroupedItems.length - 1;
 

@@ -37,13 +37,23 @@
   <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
   <!-- endbower-->
   <!-- injector:js -->
-  <script src="/dist/bulbs-autocomplete.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-formatter-service.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js"></script>
+  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.js"></script>
+  <script src="/src/bulbs-autocomplete/bulbs-autocomplete-factory.js"></script>
+  <script src="/src/bulbs-autocomplete/bulbs-autocomplete.js"></script>
   <!-- endinjector -->
   <!-- endinjector -->
 
   <script>
-    angular.module('BulbsAutocomplete.example', ['BulbsAutocomplete', 'BulbsAutocomplete.suggest', 'BulbsAutocomplete.suggest.groupBy'])
-      .controller('exampleController', function($q, $scope, BulbsAutocomplete) {
+    angular.module('BulbsAutocomplete.example', [
+      'BulbsAutocomplete',
+      'BulbsAutocomplete.suggest',
+      'BulbsAutocomplete.suggest.groupBy'
+    ])
+      .controller('exampleController', function($q, $scope, BulbsAutocomplete, BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
 
         var getItems = function() {
           var defer = $q.defer();
@@ -101,7 +111,7 @@
         };
 
         $scope.handleKeypress = function($event) {
-          $scope.$broadcast('bulbs-autocomplete-keypress', $event);
+          $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, $event);
         };
 
       });

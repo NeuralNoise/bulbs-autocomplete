@@ -4,6 +4,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
   var
     $scope,
     $directiveScope,
+    BULBS_AUTOCOMPLETE_EVENT_KEYPRESS,
     BulbsAutocompleteFormatterService,
     element,
     item1,
@@ -12,12 +13,15 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
     item4;
 
   beforeEach(function () {
+    module('BulbsAutocomplete');
     module('BulbsAutocomplete.suggest.formatter.service');
     module('BulbsAutocomplete.suggest.groupBy');
     module('jsTemplates');
 
-    inject(function (_$rootScope_, $compile, _BulbsAutocompleteFormatterService_) {
+    inject(function (_$rootScope_, $compile, _BULBS_AUTOCOMPLETE_EVENT_KEYPRESS_,
+        _BulbsAutocompleteFormatterService_) {
       $scope = _$rootScope_.$new();
+      BULBS_AUTOCOMPLETE_EVENT_KEYPRESS = _BULBS_AUTOCOMPLETE_EVENT_KEYPRESS_;
       BulbsAutocompleteFormatterService = _BulbsAutocompleteFormatterService_;
 
       item1 = {
@@ -71,7 +75,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
     $directiveScope.selectedGroupIndex = 0;
     $directiveScope.selectedIndex = 0;
 
-    $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 13});
+    $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 13});
 
     expect($scope.onSelect).toHaveBeenCalledWith(item1);
   });
@@ -81,7 +85,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 38});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 38});
       $scope.$digest();
 
       expect(element
@@ -94,7 +98,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 38});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 38});
       $scope.$digest();
 
       expect(element
@@ -107,7 +111,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 38});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 38});
       $scope.$digest();
 
       expect(element
@@ -122,7 +126,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 40});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 40});
       $scope.$digest();
 
       expect(element
@@ -135,7 +139,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 40});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 40});
       $scope.$digest();
 
       expect(element
@@ -148,7 +152,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {keyCode: 40});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 40});
       $scope.$digest();
 
       expect(element

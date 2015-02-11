@@ -1,12 +1,14 @@
 'use strict';
 
 describe('Directive: bulbs-autocomplete-suggest-directive', function () {
-  var $compile,
+  var
+    $compile,
     $rootScope,
     $scope,
     suggestScope,
     elementHtml,
     element,
+    BULBS_AUTOCOMPLETE_EVENT_KEYPRESS,
     BulbsAutocompleteFormatterService;
 
   beforeEach(function () {
@@ -16,11 +18,11 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
     inject(function ($injector) {
       $compile = $injector.get('$compile');
       $rootScope = $injector.get('$rootScope');
+      BULBS_AUTOCOMPLETE_EVENT_KEYPRESS = $injector.get('BULBS_AUTOCOMPLETE_EVENT_KEYPRESS');
       BulbsAutocompleteFormatterService = $injector.get('BulbsAutocompleteFormatterService');
       $scope = $rootScope.$new();
 
-
-      $scope.onSelect = function (eggs) {
+      $scope.onSelect = function () {
         return true;
       };
 
@@ -60,7 +62,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
     it('should not fire onSelect if selectedIndex === -1', function () {
       suggestScope.selectedIndex = -1;
 
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 13
       });
 
@@ -70,7 +72,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
     it('should fire onSelect, if selectedIndex !== -1', function () {
       suggestScope.selectedIndex = 1;
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 13
       });
       expect(suggestScope.onSelect).toHaveBeenCalled();
@@ -81,7 +83,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
   describe('Down key', function () {
     it('should select the first element if the selectedIndex is on the last element', function () {
       suggestScope.selectedIndex = suggestScope.items.length - 1;
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 40
       });
       $scope.$digest();
@@ -90,7 +92,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
     });
 
     it('should select the first element if selectedIndex is -1', function () {
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 40
       });
       $scope.$digest();
@@ -100,7 +102,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
     it('should select the second element if selectedIndex is 0', function () {
       suggestScope.selectedIndex = 0;
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 40
       });
       $scope.$digest();
@@ -112,7 +114,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
   describe('Up key', function () {
     it('should select the last element if the selectedIndex is on the first element', function () {
       suggestScope.selectedIndex = 0;
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 38
       });
       $scope.$digest();
@@ -122,7 +124,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
     it('should select the second to last element if selectedIndex is the last element', function () {
       suggestScope.selectedIndex = suggestScope.items.length - 1;
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 38
       });
       $scope.$digest();
@@ -132,7 +134,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
     it('should select the last element if selectedIndex is -1', function () {
       suggestScope.selectedIndex = -1;
-      $scope.$broadcast('bulbs-autocomplete-keypress', {
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
         'keyCode': 38
       });
       $scope.$digest();
