@@ -14,7 +14,7 @@ angular.module('BulbsAutocomplete.suggest.formatter.service', [])
 angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
-  .directive('bulbsAutocompleteSuggestGroupBy', function (BulbsAutocompleteFormatterService) {
+  .directive('bulbsAutocompleteSuggestGroupBy', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, BulbsAutocompleteFormatterService) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
@@ -38,7 +38,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
 
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
-        scope.$on('bulbs-autocomplete-keypress', function (event, keyEvent) {
+        scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (!_.isEmpty(scope.formattedGroupedItems)) {
             var lastIndexOfGroups = scope.formattedGroupedItems.length - 1;
 
@@ -108,7 +108,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy', [
 angular.module('BulbsAutocomplete.suggest.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
-  .directive('bulbsAutocompleteSuggest', function (BulbsAutocompleteFormatterService) {
+  .directive('bulbsAutocompleteSuggest', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, BulbsAutocompleteFormatterService) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
@@ -123,7 +123,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [
         });
 
         scope.selectedIndex = -1;
-        scope.$on('bulbs-autocomplete-keypress', function (event, keyEvent) {
+        scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (scope.formattedItems) {
             var lastIndexOfItems = scope.formattedItems.length - 1;
             switch (keyEvent.keyCode) {
@@ -184,7 +184,8 @@ angular.module('BulbsAutocomplete.factory', [])
 // Source: src/bulbs-autocomplete/bulbs-autocomplete.js
 angular.module('BulbsAutocomplete', [
   'BulbsAutocomplete.factory'
-]);
+])
+  .constant('BULBS_AUTOCOMPLETE_EVENT_KEYPRESS', 'bulbs-autocomplete-keypress');
 
 // Source: .tmp/bulbs-autocomplete-templates.js
 angular.module('BulbsAutocomplete').run(['$templateCache', function($templateCache) {
