@@ -1,4 +1,3 @@
-'use strict';
 // Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-formatter-service.js
 angular.module('BulbsAutocomplete.suggest.formatter.service', [])
   .service('BulbsAutocompleteFormatterService', function () {

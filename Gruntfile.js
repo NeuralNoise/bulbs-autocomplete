@@ -136,7 +136,6 @@ module.exports = function (grunt) {
         ],
         dest: 'dist/bulbs-autocomplete.js',
         options: {
-          banner: "'use strict';\n",
           process: function (src, filepath) {
             return '// Source: ' + filepath + '\n' +
               src.replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
