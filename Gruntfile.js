@@ -131,19 +131,35 @@ module.exports = function (grunt) {
       dist: {
         src: [
           'src/**/*.js',
+          '.tmp/bulbs-autocomplete-templates.js',
           '!src/**/*.spec.js'
         ],
-        dest: 'dist/bulbs-autocomplete.js'
+        dest: 'dist/bulbs-autocomplete.js',
+        options: {
+          banner: "'use strict';\n",
+          process: function (src, filepath) {
+            return '// Source: ' + filepath + '\n' +
+              src.replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
+          }
+        }
       }
     },
 
     ngtemplates: {
       BulbsAutocomplete: {
         src: ['src/**/*.html'],
-        dest: 'dist/bulbs-autocomplete-templates.js',
+        dest: '.tmp/bulbs-autocomplete-templates.js',
         options: {
-          collapseWhitespace: true,
-          collapseBooleanAttributes: true
+          htmlmin: {
+            collapseBooleanAttributes: true,
+            collapseWhitespace: true,
+            removeAttributeQuotes: true,
+            removeComments: true, // Only if you don't use comment directives!
+            removeEmptyAttributes: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true
+          },
         }
       }
     },
@@ -169,11 +185,12 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'concat',
-    'ngtemplates:BulbsAutocomplete'
+    'ngtemplates:BulbsAutocomplete',
+    'concat:dist',
   ]);
 
   grunt.registerTask('run-dist', [
+    'build',
     'injector:dist',
     'wiredep:app',
     'connect:example:keepalive'

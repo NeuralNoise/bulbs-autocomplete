@@ -1,5 +1,5 @@
 'use strict';
-
+// Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-formatter-service.js
 angular.module('BulbsAutocomplete.suggest.formatter.service', [])
   .service('BulbsAutocompleteFormatterService', function () {
     this.buildFormatter = function (formatter) {
@@ -11,8 +11,7 @@ angular.module('BulbsAutocomplete.suggest.formatter.service', [])
     };
   });
 
-'use strict';
-
+// Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js
 angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
@@ -100,14 +99,13 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
     };
   });
 
-'use strict';
-
+// Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js
 angular.module('BulbsAutocomplete.suggest.groupBy', [
   'BulbsAutocomplete',
   'BulbsAutocomplete.suggest.groupBy.directive'
 ]);
 
-'use strict';
+// Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js
 angular.module('BulbsAutocomplete.suggest.directive', [
   'BulbsAutocomplete.suggest.formatter.service'
 ])
@@ -151,15 +149,13 @@ angular.module('BulbsAutocomplete.suggest.directive', [
     };
   });
 
-'use strict';
-
+// Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.js
 angular.module('BulbsAutocomplete.suggest', [
   'BulbsAutocomplete',
   'BulbsAutocomplete.suggest.directive'
 ]);
 
-'use strict';
-
+// Source: src/bulbs-autocomplete/bulbs-autocomplete-factory.js
 angular.module('BulbsAutocomplete.factory', [])
   .factory('BulbsAutocomplete', function () {
 
@@ -186,8 +182,20 @@ angular.module('BulbsAutocomplete.factory', [])
     return BulbsAutocomplete;
   });
 
-'use strict';
-
+// Source: src/bulbs-autocomplete/bulbs-autocomplete.js
 angular.module('BulbsAutocomplete', [
   'BulbsAutocomplete.factory'
 ]);
+
+// Source: .tmp/bulbs-autocomplete-templates.js
+angular.module('BulbsAutocomplete').run(['$templateCache', function($templateCache) {
+$templateCache.put('src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
+    "<ul><li ng-repeat=\"group in formattedGroupedItems\"><div class=bulbs-autocomplete-group-key>{{ group[0] }}<div><ul class=bulbs-autocomplete-group-items><li ng-repeat=\"item in group[1]\" ng-click=onSelect(item) ng-class=\"{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}\" ng-mouseenter=\"$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1\">{{ item.display }}</li></ul></div></div></li></ul>"
+  );
+
+
+  $templateCache.put('src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
+    "<ul><li ng-repeat=\"item in formattedItems\" ng-click=onSelect(item) ng-class=\"{active: $index === $parent.selectedIndex}\" ng-mouseenter=\"$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.selectedIndex = -1\">{{ item.display }}</li></ul>"
+  );
+
+}]);

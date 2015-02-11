@@ -4,9 +4,7 @@
   "appPath": "src",
   "description": "America's Finest Autocomplete module",
   "main": [
-    "dist/bulbs-autocomplete.js",
-    "dist/bulbs-autocomplete-templates.js"
-
+    "dist/bulbs-autocomplete.js"
   ],
   "authors": [
     "Cresten St.Clair && Andrew Kos"
