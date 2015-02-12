@@ -5,7 +5,6 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
     $scope,
     $directiveScope,
     BULBS_AUTOCOMPLETE_EVENT_KEYPRESS,
-    BulbsAutocompleteFormatterService,
     element,
     item1,
     item2,
@@ -14,15 +13,12 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
 
   beforeEach(function () {
     module('BulbsAutocomplete');
-    module('BulbsAutocomplete.suggest.formatter.service');
     module('BulbsAutocomplete.suggest.groupBy');
     module('jsTemplates');
 
-    inject(function (_$rootScope_, $compile, _BULBS_AUTOCOMPLETE_EVENT_KEYPRESS_,
-        _BulbsAutocompleteFormatterService_) {
+    inject(function (_$rootScope_, $compile, _BULBS_AUTOCOMPLETE_EVENT_KEYPRESS_) {
       $scope = _$rootScope_.$new();
       BULBS_AUTOCOMPLETE_EVENT_KEYPRESS = _BULBS_AUTOCOMPLETE_EVENT_KEYPRESS_;
-      BulbsAutocompleteFormatterService = _BulbsAutocompleteFormatterService_;
 
       item1 = {
        name: 'item 1',
@@ -41,7 +37,9 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
        value: 40
       };
 
-      $scope.formatter = function () {};
+      $scope.formatter = function (item) {
+        return item;
+      };
       $scope.grouper = function () {
        return {
          'group 1': [item1, item2],
@@ -51,14 +49,14 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $scope.items = [item1, item2, item3, item4];
       $scope.onSelect = function () {};
 
-      spyOn(BulbsAutocompleteFormatterService, 'buildFormatter');
-      spyOn($scope, 'formatter').and.callThrough();
       spyOn($scope, 'grouper').and.callThrough();
       spyOn($scope, 'onSelect').and.callThrough();
 
-      element = $compile('<bulbs-autocomplete-suggest-group-by formatter="formatter" grouper="grouper" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest-group-by>')($scope.$new());
+      element = $compile('<bulbs-autocomplete-suggest-group-by formatter="formatter(item)" grouper="grouper" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest-group-by>')($scope.$new());
       _$rootScope_.$digest();
       $directiveScope = element.isolateScope();
+      
+      spyOn($directiveScope, 'formatter').and.callThrough();
     });
   });
 
@@ -66,9 +64,9 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
     $scope.items = [item1];
     $scope.$digest();
 
-    expect(BulbsAutocompleteFormatterService.buildFormatter).toHaveBeenCalled();
+    expect($directiveScope.formatter).toHaveBeenCalled();
     expect($scope.grouper).toHaveBeenCalled();
-    expect($directiveScope.formattedGroupedItems).toBeDefined();
+    expect($directiveScope.groupedItems).toBeDefined();
   });
 
   it('should call onSelect when a group is selected and enter is pressed', function () {

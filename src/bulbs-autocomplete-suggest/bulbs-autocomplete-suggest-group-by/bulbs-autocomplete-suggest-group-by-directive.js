@@ -1,35 +1,29 @@
 'use strict';
 
-angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
-  'BulbsAutocomplete.suggest.formatter.service'
-])
-  .directive('bulbsAutocompleteSuggestGroupBy', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, BulbsAutocompleteFormatterService) {
+angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
+  .directive('bulbsAutocompleteSuggestGroupBy', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
       scope: {
-        formatter: '=',
+        formatter: '&',
         grouper: '=',
         items: '=',
         onSelect: '&'
       },
       link: function (scope) {
         scope.$watch('items', function (newItemsValue) {
-          var groupedItems = scope.grouper(newItemsValue);
-
-          scope.formattedGroupedItems = _.chain(groupedItems)
-            .mapValues(function (group) {
-              return _.map(group, BulbsAutocompleteFormatterService.buildFormatter(scope.formatter, group));
-            })
-            .pairs()
-            .value();
+          scope.groupedItems = _.chain(scope.grouper(newItemsValue)).mapValues(function (group) {
+            return group;
+          })
+          .pairs()
+          .value();
         });
-
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
-          if (!_.isEmpty(scope.formattedGroupedItems)) {
-            var lastIndexOfGroups = scope.formattedGroupedItems.length - 1;
+          if (!_.isEmpty(scope.groupedItems)) {
+            var lastIndexOfGroups = scope.groupedItems.length - 1;
 
             var items;
             var lastIndexOfItems;
@@ -37,7 +31,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
               case 13:
                 // enter
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
-                  items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
+                  items = scope.groupedItems[scope.selectedGroupIndex][1];
                   scope.onSelect({selection: items[scope.selectedIndex]});
                 }
                 break;
@@ -47,15 +41,15 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                   scope.selectedGroupIndex = lastIndexOfGroups;
                 }
 
-                items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
+                items = scope.groupedItems[scope.selectedGroupIndex][1];
                 lastIndexOfItems = items.length - 1;
 
                 if (scope.selectedGroupIndex === 0 && scope.selectedIndex === 0) {
                   scope.selectedGroupIndex = lastIndexOfGroups;
-                  scope.selectedIndex = scope.formattedGroupedItems[scope.selectedGroupIndex][1].length - 1;
+                  scope.selectedIndex = scope.groupedItems[scope.selectedGroupIndex][1].length - 1;
                 } else if (scope.selectedIndex === 0) {
                   scope.selectedGroupIndex--;
-                  scope.selectedIndex = scope.formattedGroupedItems[scope.selectedGroupIndex][1].length - 1;
+                  scope.selectedIndex = scope.groupedItems[scope.selectedGroupIndex][1].length - 1;
                 } else {
                   scope.selectedIndex = scope.selectedIndex <= 0 ? lastIndexOfItems : scope.selectedIndex - 1;
                 }
@@ -67,7 +61,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [
                   scope.selectedGroupIndex = 0;
                 }
 
-                items = scope.formattedGroupedItems[scope.selectedGroupIndex][1];
+                items = scope.groupedItems[scope.selectedGroupIndex][1];
                 lastIndexOfItems = items.length - 1;
 
                 if (scope.selectedGroupIndex === lastIndexOfGroups && scope.selectedIndex === lastIndexOfItems) {
