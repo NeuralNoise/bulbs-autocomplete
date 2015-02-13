@@ -8,18 +8,16 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
     suggestScope,
     elementHtml,
     element,
-    BULBS_AUTOCOMPLETE_EVENT_KEYPRESS,
-    BulbsAutocompleteFormatterService;
+    BULBS_AUTOCOMPLETE_EVENT_KEYPRESS;
 
   beforeEach(function () {
     module('BulbsAutocomplete.suggest');
     module('jsTemplates');
-    elementHtml = '<bulbs-autocomplete-suggest formatter="formatter" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest>';
+    elementHtml = '<bulbs-autocomplete-suggest formatter="formatter(item)" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest>';
     inject(function ($injector) {
       $compile = $injector.get('$compile');
       $rootScope = $injector.get('$rootScope');
       BULBS_AUTOCOMPLETE_EVENT_KEYPRESS = $injector.get('BULBS_AUTOCOMPLETE_EVENT_KEYPRESS');
-      BulbsAutocompleteFormatterService = $injector.get('BulbsAutocompleteFormatterService');
       $scope = $rootScope.$new();
 
       $scope.onSelect = function () {
@@ -36,15 +34,15 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
         'name': 'wilma'
       }];
 
-      $scope.formatter = function (items) {
-        return items;
+      $scope.formatter = function (item) {
+        return item.name;
       };
 
-      spyOn(BulbsAutocompleteFormatterService, 'buildFormatter').and.callThrough();
       element = $compile(elementHtml)($scope);
       $scope.$digest();
       suggestScope = element.isolateScope();
       spyOn(suggestScope, 'onSelect').and.callThrough();
+      spyOn(suggestScope, 'formatter').and.callThrough();
     });
   });
 
@@ -52,7 +50,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
   describe('when the items array changes', function () {
     it('should fire the formatter callback', function () {
       $scope.$digest();
-      expect(BulbsAutocompleteFormatterService.buildFormatter).toHaveBeenCalled();
+      expect(suggestScope.formatter).toHaveBeenCalled();
     });
   });
 

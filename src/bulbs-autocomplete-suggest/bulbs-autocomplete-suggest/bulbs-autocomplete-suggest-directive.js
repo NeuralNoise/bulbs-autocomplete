@@ -1,30 +1,24 @@
 'use strict';
-angular.module('BulbsAutocomplete.suggest.directive', [
-  'BulbsAutocomplete.suggest.formatter.service'
-])
-  .directive('bulbsAutocompleteSuggest', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, BulbsAutocompleteFormatterService) {
+angular.module('BulbsAutocomplete.suggest.directive', [])
+  .directive('bulbsAutocompleteSuggest', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
       scope: {
-        formatter: '=',
+        formatter: '&',
         items: '=',
         onSelect: '&'
       },
       link: function (scope) {
-        scope.$watch('items', function (newItemsValue) {
-          scope.formattedItems = _.map(newItemsValue, BulbsAutocompleteFormatterService.buildFormatter(scope.formatter));
-        });
-
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
-          if (scope.formattedItems) {
-            var lastIndexOfItems = scope.formattedItems.length - 1;
+          if (scope.items) {
+            var lastIndexOfItems = scope.items.length - 1;
             switch (keyEvent.keyCode) {
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  scope.onSelect({selection: scope.formattedItems[scope.selectedIndex]});
+                  scope.onSelect({selection: scope.items[scope.selectedIndex]});
                 }
                 break;
               case 38:
