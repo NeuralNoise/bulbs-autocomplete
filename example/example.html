@@ -21,12 +21,12 @@
 <body>
 
   <div ng-controller="exampleController">
-    <h1>{{selectedSuggest.display}}</h1>
+    <h1>{{ selectedSuggest }}</h1>
     Search:
     <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()" ng-keydown="handleKeypress($event)">
-    <bulbs-autocomplete-suggest formatter="suggestFormatter" items="autocompleteItems" on-select="suggestSelect(selection)">
+    <bulbs-autocomplete-suggest formatter="suggestFormatter(item)" items="autocompleteItems" on-select="suggestSelect(selection)">
     </bulbs-autocomplete-suggest>
-    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter" grouper="itemGrouper" on-select="suggestSelect">
+    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter(item)" grouper="itemGrouper" on-select="suggestSelect(selection)">
     </bulbs-autocomplete-suggest-group-by>
   </div>
 
@@ -37,7 +37,6 @@
   <script src="../bower_components/angular-mocks/angular-mocks.js"></script>
   <!-- endbower-->
   <!-- injector:js -->
-  <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-formatter-service.js"></script>
   <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js"></script>
   <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js"></script>
   <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js"></script>
