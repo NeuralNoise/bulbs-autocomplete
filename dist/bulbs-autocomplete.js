@@ -190,7 +190,7 @@ angular.module('BulbsAutocomplete', [
 // Source: .tmp/bulbs-autocomplete-templates.js
 angular.module('BulbsAutocomplete').run(['$templateCache', function($templateCache) {
 $templateCache.put('src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
-    "<ul><li ng-repeat=\"group in formattedGroupedItems\"><div class=bulbs-autocomplete-group-key>{{ group[0] }}<div><ul class=bulbs-autocomplete-group-items><li ng-repeat=\"item in group[1]\" ng-click=\"onSelect({selection: item})\" ng-class=\"{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}\" ng-mouseenter=\"$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1\">{{ item.display }}</li></ul></div></div></li></ul>"
+    "<ul><li ng-repeat=\"group in formattedGroupedItems\"><div class=bulbs-autocomplete-group-key>{{ group[0] }}</div><ul class=bulbs-autocomplete-group-items><li ng-repeat=\"item in group[1]\" ng-click=\"onSelect({selection: item})\" ng-class=\"{active: $parent.$parent.selectedGroupIndex === $parent.$index && $index === $parent.$parent.selectedIndex}\" ng-mouseenter=\"$parent.$parent.selectedGroupIndex = $parent.$index; $parent.$parent.selectedIndex = $index\" ng-mouseleave=\"$parent.$parent.selectedGroupIndex = -1; $parent.$parent.selectedIndex = -1\">{{ item.display }}</li></ul></li></ul>"
   );
 
 
