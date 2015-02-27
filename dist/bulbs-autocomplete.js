@@ -13,16 +13,21 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
       link: function (scope) {
         scope.$watch('items', function (newItemsValue) {
           scope.groupedItems = _.chain(scope.grouper(newItemsValue)).mapValues(function (group) {
-            return group;
-          })
-          .pairs()
-          .value();
+              return group;
+            })
+            .pairs()
+            .value();
         });
         scope.selectedGroupIndex = -1;
         scope.selectedIndex = -1;
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (!_.isEmpty(scope.groupedItems)) {
             var lastIndexOfGroups = scope.groupedItems.length - 1;
+
+            if (lastIndexOfGroups < scope.selectedGroupIndex) {
+              scope.selectedGroupIndex = -1;
+              scope.selectedIndex = -1;
+            }
 
             var items;
             var lastIndexOfItems;
@@ -31,7 +36,9 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
                 // enter
                 if (scope.selectedGroupIndex !== -1 && scope.selectedIndex !== -1) {
                   items = scope.groupedItems[scope.selectedGroupIndex][1];
-                  scope.onSelect({selection: items[scope.selectedIndex]});
+                  scope.onSelect({
+                    selection: items[scope.selectedIndex]
+                  });
                 }
                 break;
               case 38:
