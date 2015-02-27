@@ -1,6 +1,6 @@
 {
   "name": "bulbs-autocomplete",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "dependencies": {},
   "devDependencies": {
     "chromedriver": "^2.13.0",
