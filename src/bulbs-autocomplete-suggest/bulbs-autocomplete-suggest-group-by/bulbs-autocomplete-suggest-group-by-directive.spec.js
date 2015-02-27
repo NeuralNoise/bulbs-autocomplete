@@ -21,30 +21,30 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       BULBS_AUTOCOMPLETE_EVENT_KEYPRESS = _BULBS_AUTOCOMPLETE_EVENT_KEYPRESS_;
 
       item1 = {
-       name: 'item 1',
-       value: 10
+        name: 'item 1',
+        value: 10
       };
       item2 = {
-       name: 'item 2',
-       value: 20
+        name: 'item 2',
+        value: 20
       };
       item3 = {
-       name: 'item 3',
-       value: 30
+        name: 'item 3',
+        value: 30
       };
       item4 = {
-       name: 'item 4',
-       value: 40
+        name: 'item 4',
+        value: 40
       };
 
       $scope.formatter = function (item) {
         return item;
       };
       $scope.grouper = function () {
-       return {
-         'group 1': [item1, item2],
-         'group 2': [item3, item4]
-       };
+        return {
+          'group 1': [item1, item2],
+          'group 2': [item3, item4]
+        };
       };
       $scope.items = [item1, item2, item3, item4];
       $scope.onSelect = function () {};
@@ -55,7 +55,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       element = $compile('<bulbs-autocomplete-suggest-group-by formatter="formatter(item)" grouper="grouper" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest-group-by>')($scope.$new());
       _$rootScope_.$digest();
       $directiveScope = element.isolateScope();
-      
+
       spyOn($directiveScope, 'formatter').and.callThrough();
     });
   });
@@ -73,22 +73,42 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
     $directiveScope.selectedGroupIndex = 0;
     $directiveScope.selectedIndex = 0;
 
-    $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 13});
+    $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+      keyCode: 13
+    });
 
     expect($scope.onSelect).toHaveBeenCalledWith(item1);
   });
 
+
+  it('#keyPress should should reset indexes to -1 when selectedGroupIndex is out of bounds', function () {
+    $directiveScope.selectedGroupIndex = 10;
+    $directiveScope.selectedIndex = 0;
+
+    $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+      keyCode: 38
+    });
+    $scope.$digest(function () {
+      expect($directiveScope.selectedGroupIndex).toBe(-1);
+      expect($directiveScope.selectedIndex).toBe(-1);
+    });
+
+  });
+
   describe('up key', function () {
+
     it('should move up a group, bottom item when at the top of a group', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 38});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+        keyCode: 38
+      });
       $scope.$digest();
 
       expect(element
-        .find('ul.bulbs-autocomplete-group-items:eq(0) > li:nth-child(2)')
-        .hasClass('active'))
+          .find('ul.bulbs-autocomplete-group-items:eq(0) > li:nth-child(2)')
+          .hasClass('active'))
         .toBe(true);
     });
 
@@ -96,12 +116,14 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 38});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+        keyCode: 38
+      });
       $scope.$digest();
 
       expect(element
-        .find('ul.bulbs-autocomplete-group-items:eq(1) > li:nth-child(1)')
-        .hasClass('active'))
+          .find('ul.bulbs-autocomplete-group-items:eq(1) > li:nth-child(1)')
+          .hasClass('active'))
         .toBe(true);
     });
 
@@ -109,12 +131,14 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 38});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+        keyCode: 38
+      });
       $scope.$digest();
 
       expect(element
-        .find('ul.bulbs-autocomplete-group-items:eq(1) > li:nth-child(2)')
-        .hasClass('active'))
+          .find('ul.bulbs-autocomplete-group-items:eq(1) > li:nth-child(2)')
+          .hasClass('active'))
         .toBe(true);
     });
   });
@@ -124,12 +148,14 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 40});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+        keyCode: 40
+      });
       $scope.$digest();
 
       expect(element
-        .find('ul.bulbs-autocomplete-group-items:eq(1) > li:nth-child(1)')
-        .hasClass('active'))
+          .find('ul.bulbs-autocomplete-group-items:eq(1) > li:nth-child(1)')
+          .hasClass('active'))
         .toBe(true);
     });
 
@@ -137,12 +163,14 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 40});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+        keyCode: 40
+      });
       $scope.$digest();
 
       expect(element
-        .find('ul.bulbs-autocomplete-group-items:eq(0) > li:nth-child(2)')
-        .hasClass('active'))
+          .find('ul.bulbs-autocomplete-group-items:eq(0) > li:nth-child(2)')
+          .hasClass('active'))
         .toBe(true);
     });
 
@@ -150,12 +178,14 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {keyCode: 40});
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
+        keyCode: 40
+      });
       $scope.$digest();
 
       expect(element
-        .find('ul.bulbs-autocomplete-group-items:eq(0) > li:nth-child(1)')
-        .hasClass('active'))
+          .find('ul.bulbs-autocomplete-group-items:eq(0) > li:nth-child(1)')
+          .hasClass('active'))
         .toBe(true);
     });
   });
