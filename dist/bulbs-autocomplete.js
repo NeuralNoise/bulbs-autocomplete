@@ -1,6 +1,6 @@
 // Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by-directive.js
 angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
-  .directive('bulbsAutocompleteSuggestGroupBy', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
+  .directive('bulbsAutocompleteSuggestGroupBy', ['BULBS_AUTOCOMPLETE_EVENT_KEYPRESS', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
@@ -85,7 +85,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
         });
       }
     };
-  });
+  }]);
 
 // Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js
 angular.module('BulbsAutocomplete.suggest.groupBy', [
@@ -95,7 +95,7 @@ angular.module('BulbsAutocomplete.suggest.groupBy', [
 
 // Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js
 angular.module('BulbsAutocomplete.suggest.directive', [])
-  .directive('bulbsAutocompleteSuggest', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
+  .directive('bulbsAutocompleteSuggest', ['BULBS_AUTOCOMPLETE_EVENT_KEYPRESS', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
@@ -113,7 +113,9 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  scope.onSelect({selection: scope.items[scope.selectedIndex]});
+                  scope.onSelect({
+                    selection: scope.items[scope.selectedIndex]
+                  });
                 }
                 break;
               case 38:
@@ -129,7 +131,7 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
         });
       }
     };
-  });
+  }]);
 
 // Source: src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.js
 angular.module('BulbsAutocomplete.suggest', [
@@ -139,7 +141,7 @@ angular.module('BulbsAutocomplete.suggest', [
 
 // Source: src/bulbs-autocomplete/bulbs-autocomplete-factory.js
 angular.module('BulbsAutocomplete.factory', [])
-  .factory('BulbsAutocomplete', function () {
+  .factory('BulbsAutocomplete', [function () {
 
     var BulbsAutocomplete = function (getItemsFunction) {
       if (_.isFunction(getItemsFunction)) {
@@ -162,7 +164,7 @@ angular.module('BulbsAutocomplete.factory', [])
     };
 
     return BulbsAutocomplete;
-  });
+  }]);
 
 // Source: src/bulbs-autocomplete/bulbs-autocomplete.js
 angular.module('BulbsAutocomplete', [

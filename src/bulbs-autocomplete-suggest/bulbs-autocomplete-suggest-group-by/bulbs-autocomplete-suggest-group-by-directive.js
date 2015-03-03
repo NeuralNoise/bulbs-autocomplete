@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
-  .directive('bulbsAutocompleteSuggestGroupBy', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
+  .directive('bulbsAutocompleteSuggestGroupBy', ['BULBS_AUTOCOMPLETE_EVENT_KEYPRESS', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.html',
@@ -86,4 +86,4 @@ angular.module('BulbsAutocomplete.suggest.groupBy.directive', [])
         });
       }
     };
-  });
+  }]);

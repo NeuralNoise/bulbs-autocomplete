@@ -1,6 +1,6 @@
 'use strict';
 angular.module('BulbsAutocomplete.suggest.directive', [])
-  .directive('bulbsAutocompleteSuggest', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
+  .directive('bulbsAutocompleteSuggest', ['BULBS_AUTOCOMPLETE_EVENT_KEYPRESS', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
       restrict: 'E',
       templateUrl: 'src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.html',
@@ -18,7 +18,9 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
               case 13:
                 // enter
                 if (scope.selectedIndex !== -1) {
-                  scope.onSelect({selection: scope.items[scope.selectedIndex]});
+                  scope.onSelect({
+                    selection: scope.items[scope.selectedIndex]
+                  });
                 }
                 break;
               case 38:
@@ -34,4 +36,4 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
         });
       }
     };
-  });
+  }]);

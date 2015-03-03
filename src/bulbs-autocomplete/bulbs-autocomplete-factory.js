@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('BulbsAutocomplete.factory', [])
-  .factory('BulbsAutocomplete', function () {
+  .factory('BulbsAutocomplete', [function () {
 
     var BulbsAutocomplete = function (getItemsFunction) {
       if (_.isFunction(getItemsFunction)) {
@@ -24,4 +24,4 @@ angular.module('BulbsAutocomplete.factory', [])
     };
 
     return BulbsAutocomplete;
-  });
+  }]);
