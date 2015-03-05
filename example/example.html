@@ -21,12 +21,14 @@
 <body>
 
   <div ng-controller="exampleController">
-    <h1>{{ selectedSuggest }}</h1>
     Search:
     <input type="text" ng-model="searchTerm" ng-change="updateAutocomplete()" ng-keydown="handleKeypress($event)">
+    <div>Selected in Suggest: {{ selectedSuggest }}</div>
+    <div>Selected in Group Suggest: {{ selectedGroupSuggest }}</div>
+
     <bulbs-autocomplete-suggest formatter="suggestFormatter(item)" items="autocompleteItems" on-select="suggestSelect(selection)">
     </bulbs-autocomplete-suggest>
-    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter(item)" grouper="itemGrouper" on-select="suggestSelect(selection)">
+    <bulbs-autocomplete-suggest-group-by items="autocompleteItems" formatter="suggestFormatter(item)" grouper="itemGrouper" on-select="groupSuggestSelect(selection)">
     </bulbs-autocomplete-suggest-group-by>
   </div>
 
@@ -41,8 +43,7 @@
   <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-group-by/bulbs-autocomplete-suggest-group-by.js"></script>
   <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest-directive.js"></script>
   <script src="/src/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest/bulbs-autocomplete-suggest.js"></script>
-  <script src="/src/bulbs-autocomplete/bulbs-autocomplete-factory.js"></script>
-  <script src="/src/bulbs-autocomplete/bulbs-autocomplete.js"></script>
+  <script src="/src/bulbs-autocomplete.js"></script>
   <!-- endinjector -->
   <!-- endinjector -->
 
@@ -52,9 +53,10 @@
       'BulbsAutocomplete.suggest',
       'BulbsAutocomplete.suggest.groupBy'
     ])
-      .controller('exampleController', function($q, $scope, BulbsAutocomplete, BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
+      .controller('exampleController', function ($q, $scope, BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
+        'use strict';
 
-        var getItems = function() {
+        var $getItems = function () {
           var defer = $q.defer();
 
           if ($scope.searchTerm) {
@@ -87,29 +89,31 @@
           return defer.promise;
         };
 
-        $scope.suggestFormatter = function(item) {
+        $scope.suggestFormatter = function (item) {
           return item.name + ' - ' + item.value;
         };
 
-        $scope.suggestSelect = function(item) {
+        $scope.suggestSelect = function (item) {
           $scope.selectedSuggest = item;
         };
 
-        $scope.itemGrouper = function(items) {
-          return _.groupBy(items, function(item) {
+        $scope.groupSuggestSelect = function (item) {
+          $scope.selectedGroupSuggest = item;
+        };
+
+        $scope.itemGrouper = function (items) {
+          return _.groupBy(items, function (item) {
             return item.value > 30 ? 'Less than or equal to thirty' : 'More than thirty';
           });
         };
 
-        var autocomplete = new BulbsAutocomplete(getItems);
-
-        $scope.updateAutocomplete = function() {
-          autocomplete.$retrieve().then(function(results) {
+        $scope.updateAutocomplete = function () {
+          $getItems().then(function (results) {
             $scope.autocompleteItems = results;
           });
         };
 
-        $scope.handleKeypress = function($event) {
+        $scope.handleKeypress = function ($event) {
           $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, $event);
         };
 

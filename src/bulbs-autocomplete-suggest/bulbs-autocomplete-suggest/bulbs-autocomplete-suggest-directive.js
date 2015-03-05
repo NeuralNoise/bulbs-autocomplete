@@ -1,4 +1,5 @@
 'use strict';
+
 angular.module('BulbsAutocomplete.suggest.directive', [])
   .directive('bulbsAutocompleteSuggest', ['BULBS_AUTOCOMPLETE_EVENT_KEYPRESS', function (BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
     return {
@@ -10,7 +11,19 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
         onSelect: '&'
       },
       link: function (scope) {
+        scope.mouseActive = false;
         scope.selectedIndex = -1;
+
+        scope.mouseEnterItem = function (index) {
+          scope.mouseActive = true;
+          scope.selectedIndex = index;
+        };
+
+        scope.mouseLeaveItem = function () {
+          scope.mouseActive = false;
+          scope.selectedIndex = -1;
+        };
+
         scope.$on(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, function (event, keyEvent) {
           if (scope.items) {
             var lastIndexOfItems = scope.items.length - 1;
@@ -25,11 +38,15 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
                 break;
               case 38:
                 // up
-                scope.selectedIndex = scope.selectedIndex <= 0 ? lastIndexOfItems : scope.selectedIndex - 1;
+                if (!scope.mouseActive) {
+                  scope.selectedIndex = scope.selectedIndex <= 0 ? lastIndexOfItems : scope.selectedIndex - 1;
+                }
                 break;
               case 40:
                 //Down
-                scope.selectedIndex = scope.selectedIndex >= lastIndexOfItems ? 0 : scope.selectedIndex + 1;
+                if (!scope.mouseActive) {
+                  scope.selectedIndex = scope.selectedIndex >= lastIndexOfItems ? 0 : scope.selectedIndex + 1;
+                }
                 break;
             }
           }

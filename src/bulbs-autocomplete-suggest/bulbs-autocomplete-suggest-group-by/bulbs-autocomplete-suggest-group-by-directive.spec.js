@@ -69,18 +69,6 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
     expect($directiveScope.groupedItems).toBeDefined();
   });
 
-  it('should call onSelect when a group is selected and enter is pressed', function () {
-    $directiveScope.selectedGroupIndex = 0;
-    $directiveScope.selectedIndex = 0;
-
-    $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-      keyCode: 13
-    });
-
-    expect($scope.onSelect).toHaveBeenCalledWith(item1);
-  });
-
-
   it('#keyPress should should reset indexes to -1 when selectedGroupIndex is out of bounds', function () {
     $directiveScope.selectedGroupIndex = 10;
     $directiveScope.selectedIndex = 0;
@@ -92,18 +80,50 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       expect($directiveScope.selectedGroupIndex).toBe(-1);
       expect($directiveScope.selectedIndex).toBe(-1);
     });
+  });
 
+  describe('enter key', function () {
+    var keyEnterEvent = {keyCode: 13};
+
+    it('should call onSelect on an item the mouse has marked active', function () {
+      $directiveScope.mouseActive = true;
+      $directiveScope.selectedGroupIndex = 0;
+      $directiveScope.selectedIndex = 0;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
+      $scope.$digest();
+
+      expect($scope.onSelect).toHaveBeenCalledWith(item1);
+    });
+
+    it('should call onSelect when a group is selected', function () {
+      $directiveScope.selectedGroupIndex = 0;
+      $directiveScope.selectedIndex = 0;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
+
+      expect($scope.onSelect).toHaveBeenCalledWith(item1);
+    });
   });
 
   describe('up key', function () {
+    var keyUpEvent = {keyCode: 38};
+
+    it('should not modify active state when the mouse has marked something active', function () {
+      $directiveScope.mouseActive = true;
+      $directiveScope.selectedIndex = 1;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
+      $scope.$digest();
+
+      expect($directiveScope.selectedIndex).toBe(1);
+    });
 
     it('should move up a group, bottom item when at the top of a group', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        keyCode: 38
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
 
       expect(element
@@ -116,9 +136,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        keyCode: 38
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
 
       expect(element
@@ -131,9 +149,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        keyCode: 38
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
 
       expect(element
@@ -144,13 +160,23 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
   });
 
   describe('down key', function () {
+    var keyDnEvent = {keyCode: 40};
+
+    it('should not modify active state when the mouse has marked something active', function () {
+      $directiveScope.mouseActive = true;
+      $directiveScope.selectedIndex = 1;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
+      $scope.$digest();
+
+      expect($directiveScope.selectedIndex).toBe(1);
+    });
+
     it('should move down a group, top item when at the bottom of a group', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        keyCode: 40
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
 
       expect(element
@@ -163,9 +189,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 0;
       $directiveScope.selectedIndex = 0;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        keyCode: 40
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
 
       expect(element
@@ -178,9 +202,7 @@ describe('Directive: bulbsAutocompleteSuggestGroupBy', function () {
       $directiveScope.selectedGroupIndex = 1;
       $directiveScope.selectedIndex = 1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        keyCode: 40
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
 
       expect(element

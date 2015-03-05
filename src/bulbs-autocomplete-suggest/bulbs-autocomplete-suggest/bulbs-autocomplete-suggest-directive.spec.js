@@ -5,7 +5,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
     $compile,
     $rootScope,
     $scope,
-    suggestScope,
+    $directiveScope,
     elementHtml,
     element,
     BULBS_AUTOCOMPLETE_EVENT_KEYPRESS;
@@ -13,7 +13,9 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
   beforeEach(function () {
     module('BulbsAutocomplete.suggest');
     module('jsTemplates');
+
     elementHtml = '<bulbs-autocomplete-suggest formatter="formatter(item)" items="items" on-select="onSelect(selection)"></bulbs-autocomplete-suggest>';
+
     inject(function ($injector) {
       $compile = $injector.get('$compile');
       $rootScope = $injector.get('$rootScope');
@@ -40,101 +42,119 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
       element = $compile(elementHtml)($scope);
       $scope.$digest();
-      suggestScope = element.isolateScope();
-      spyOn(suggestScope, 'onSelect').and.callThrough();
-      spyOn(suggestScope, 'formatter').and.callThrough();
+      $directiveScope = element.isolateScope();
+
+      spyOn($scope, 'onSelect').and.callThrough();
+      spyOn($scope, 'formatter').and.callThrough();
     });
   });
-
 
   describe('when the items array changes', function () {
     it('should fire the formatter callback', function () {
       $scope.$digest();
-      expect(suggestScope.formatter).toHaveBeenCalled();
+      expect($scope.formatter).toHaveBeenCalled();
     });
   });
 
+  describe('enter key', function () {
+    var keyEnterEvent = {keyCode: 13};
 
-  describe('Enter key', function () {
+    it('should call onSelect on an item the mouse has marked active', function () {
+      $directiveScope.mouseActive = true;
+      $directiveScope.selectedIndex = 1;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
+      $scope.$digest();
+
+      expect($scope.onSelect).toHaveBeenCalled();
+    });
 
     it('should not fire onSelect if selectedIndex === -1', function () {
-      suggestScope.selectedIndex = -1;
+      $directiveScope.selectedIndex = -1;
 
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 13
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
 
-      expect(suggestScope.onSelect).not.toHaveBeenCalled();
-
+      expect($scope.onSelect).not.toHaveBeenCalled();
     });
 
     it('should fire onSelect, if selectedIndex !== -1', function () {
-      suggestScope.selectedIndex = 1;
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 13
-      });
-      expect(suggestScope.onSelect).toHaveBeenCalled();
-    });
+      $directiveScope.selectedIndex = 1;
 
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
+
+      expect($scope.onSelect).toHaveBeenCalled();
+    });
   });
 
-  describe('Down key', function () {
+  describe('down key', function () {
+    var keyDnEvent = {keyCode: 40};
+
+    it('should not modify active state when the mouse has marked something active', function () {
+      $directiveScope.mouseActive = true;
+      $directiveScope.selectedIndex = 1;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
+      $scope.$digest();
+
+      expect($directiveScope.selectedIndex).toBe(1);
+    });
+
     it('should select the first element if the selectedIndex is on the last element', function () {
-      suggestScope.selectedIndex = suggestScope.items.length - 1;
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 40
-      });
+      $directiveScope.selectedIndex = $directiveScope.items.length - 1;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:first');
       expect(selectedElement.hasClass('active')).toBe(true);
     });
 
     it('should select the first element if selectedIndex is -1', function () {
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 40
-      });
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:first');
       expect(selectedElement.hasClass('active')).toBe(true);
     });
 
     it('should select the second element if selectedIndex is 0', function () {
-      suggestScope.selectedIndex = 0;
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 40
-      });
+      $directiveScope.selectedIndex = 0;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:nth-child(2)');
       expect(selectedElement.hasClass('active')).toBe(true);
     });
   });
 
-  describe('Up key', function () {
+  describe('up key', function () {
+    var keyUpEvent = {keyCode: 38};
+
+    it('should not modify active state when the mouse has marked something active', function () {
+      $directiveScope.mouseActive = true;
+      $directiveScope.selectedIndex = 1;
+
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
+      $scope.$digest();
+
+      expect($directiveScope.selectedIndex).toBe(1);
+    });
+
     it('should select the last element if the selectedIndex is on the first element', function () {
-      suggestScope.selectedIndex = 0;
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 38
-      });
+      $directiveScope.selectedIndex = 0;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:last');
       expect(selectedElement.hasClass('active')).toBe(true);
     });
 
     it('should select the second to last element if selectedIndex is the last element', function () {
-      suggestScope.selectedIndex = suggestScope.items.length - 1;
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 38
-      });
+      $directiveScope.selectedIndex = $directiveScope.items.length - 1;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:nth-child(3)');
       expect(selectedElement.hasClass('active')).toBe(true);
     });
 
     it('should select the last element if selectedIndex is -1', function () {
-      suggestScope.selectedIndex = -1;
-      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, {
-        'keyCode': 38
-      });
+      $directiveScope.selectedIndex = -1;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:last');
       expect(selectedElement.hasClass('active')).toBe(true);

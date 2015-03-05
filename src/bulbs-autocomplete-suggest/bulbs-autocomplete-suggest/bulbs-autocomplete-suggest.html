@@ -3,6 +3,6 @@
       ng-repeat="item in items"
       ng-click="onSelect({selection: item})"
       ng-class="{active: $index === selectedIndex}"
-      ng-mouseenter="selectedIndex = $index"
-      ng-mouseleave="selectedIndex = -1">{{ formatter({item:item}) }}</li>
+      ng-mouseenter="mouseEnterItem($index)"
+      ng-mouseleave="mouseLeaveItem()">{{ formatter({item:item}) }}</li>
 </ul>
