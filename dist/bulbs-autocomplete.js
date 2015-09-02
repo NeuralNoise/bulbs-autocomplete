@@ -142,11 +142,9 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
             switch (keyEvent.keyCode) {
               case 13:
                 // enter
-                if (scope.selectedIndex !== -1) {
-                  scope.onSelect({
-                    selection: scope.items[scope.selectedIndex]
-                  });
-                }
+                scope.onSelect({
+                  selection: scope.selectedIndex === -1 ? null : scope.items[scope.selectedIndex]
+                });
                 break;
               case 38:
                 // up
