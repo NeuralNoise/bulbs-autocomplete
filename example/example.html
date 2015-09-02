@@ -49,10 +49,10 @@
 
   <script>
     angular.module('BulbsAutocomplete.example', [
-      'BulbsAutocomplete',
-      'BulbsAutocomplete.suggest',
-      'BulbsAutocomplete.suggest.groupBy'
-    ])
+      'BulbsAutocomplete'
+    ]);
+
+    angular.module('BulbsAutocomplete.example')
       .controller('exampleController', function ($q, $scope, BULBS_AUTOCOMPLETE_EVENT_KEYPRESS) {
         'use strict';
 
