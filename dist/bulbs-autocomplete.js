@@ -151,13 +151,13 @@ angular.module('BulbsAutocomplete.suggest.directive', [])
               case 38:
                 // up
                 if (!scope.mouseActive) {
-                  scope.selectedIndex = scope.selectedIndex <= 0 ? lastIndexOfItems : scope.selectedIndex - 1;
+                  scope.selectedIndex = scope.selectedIndex <= -1 ? lastIndexOfItems : scope.selectedIndex - 1;
                 }
                 break;
               case 40:
                 //Down
                 if (!scope.mouseActive) {
-                  scope.selectedIndex = scope.selectedIndex >= lastIndexOfItems ? 0 : scope.selectedIndex + 1;
+                  scope.selectedIndex = scope.selectedIndex >= lastIndexOfItems ? -1 : scope.selectedIndex + 1;
                 }
                 break;
             }
