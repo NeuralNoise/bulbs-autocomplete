@@ -99,12 +99,22 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
       expect($directiveScope.selectedIndex).toBe(1);
     });
 
-    it('should select the first element if the selectedIndex is on the last element', function () {
-      $directiveScope.selectedIndex = $directiveScope.items.length - 1;
+    it('should select the first element if the selection is empty', function () {
+      $directiveScope.selectedIndex = -1;
       $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:first');
       expect(selectedElement.hasClass('active')).toBe(true);
+      expect($directiveScope.selectedIndex).toBe(0)
+    });
+
+    it('should clear selection if the selectedIndex is on the last element', function () {
+      $directiveScope.selectedIndex = $directiveScope.items.length - 1;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyDnEvent);
+      $scope.$digest();
+      var activeElements = $(element).find('ul > li.active');
+      expect(activeElements.length).toBe(0);
+      expect($directiveScope.selectedIndex).toBe(-1);
     });
 
     it('should select the first element if selectedIndex is -1', function () {
@@ -136,12 +146,22 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
       expect($directiveScope.selectedIndex).toBe(1);
     });
 
-    it('should select the last element if the selectedIndex is on the first element', function () {
-      $directiveScope.selectedIndex = 0;
+    it('should select the last element if selection is empty', function () {
+      $directiveScope.selectedIndex = -1;
       $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
       $scope.$digest();
       var selectedElement = $(element).find('ul > li:last');
       expect(selectedElement.hasClass('active')).toBe(true);
+      expect($directiveScope.selectedIndex).toBe($directiveScope.items.length - 1);
+    });
+
+    it('should clear selection if the selectedIndex is on the first element', function () {
+      $directiveScope.selectedIndex = 0;
+      $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyUpEvent);
+      $scope.$digest();
+      var activeElements = $(element).find('ul > li.active');
+      expect(activeElements.length).toBe(0);
+      expect($directiveScope.selectedIndex).toBe(-1);
     });
 
     it('should select the second to last element if selectedIndex is the last element', function () {
