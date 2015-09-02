@@ -27,13 +27,13 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
       };
 
       $scope.items = [{
-        'name': 'baocn'
+        name: 'bacon'
       }, {
-        'name': 'eggs'
+        name: 'eggs'
       }, {
-        'name': 'fred'
+        name: 'fred'
       }, {
-        'name': 'wilma'
+        name: 'wilma'
       }];
 
       $scope.formatter = function (item) {
@@ -69,12 +69,12 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
       expect($scope.onSelect).toHaveBeenCalled();
     });
 
-    it('should not fire onSelect if selectedIndex === -1', function () {
+    it('should fire onSelect with a null selection if selectedIndex === -1', function () {
       $directiveScope.selectedIndex = -1;
 
       $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
 
-      expect($scope.onSelect).not.toHaveBeenCalled();
+      expect($scope.onSelect).toHaveBeenCalledWith(null);
     });
 
     it('should fire onSelect, if selectedIndex !== -1', function () {
@@ -82,7 +82,7 @@ describe('Directive: bulbs-autocomplete-suggest-directive', function () {
 
       $scope.$broadcast(BULBS_AUTOCOMPLETE_EVENT_KEYPRESS, keyEnterEvent);
 
-      expect($scope.onSelect).toHaveBeenCalled();
+      expect($scope.onSelect).toHaveBeenCalledWith($scope.items[$directiveScope.selectedIndex]);
     });
   });
 
