@@ -4,5 +4,7 @@
       ng-click="onSelect({selection: item})"
       ng-class="{active: $index === selectedIndex}"
       ng-mouseenter="mouseEnterItem($index)"
-      ng-mouseleave="mouseLeaveItem()">{{ formatter({item:item}) }}</li>
+      ng-mouseleave="mouseLeaveItem()"
+      ng-bind-html="formatter({item:item})">
+  </li>
 </ul>
