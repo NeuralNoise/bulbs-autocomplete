@@ -7,7 +7,9 @@
           ng-click="onSelect({selection: item})"
           ng-class="{active: selectedGroupIndex === $parent.$index && $index === selectedIndex}"
           ng-mouseenter="mouseEnterItem($parent.$index, $index)"
-          ng-mouseleave="mouseLeaveItem()">{{ formatter({item:item}) }}</li>
+          ng-mouseleave="mouseLeaveItem()"
+          ng-bind-html="formatter({item:item})">
+      </li>
     </ul>
   </li>
 </ul>
